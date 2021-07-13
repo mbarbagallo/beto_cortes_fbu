@@ -1,18 +1,28 @@
 package com.example.photostomusic;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Track;
-
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
+
+    public final String TAG = this.getClass().getSimpleName();
+
+    EditText etUser;
+    EditText etPassword;
+    Button btnLogin;
+    Button btnSignup;
 
     private static final String CLIENT_ID = "59a64c83ef024ea786df03a966505f91";
     private static final String REDIRECT_URI = "intent://";
@@ -29,7 +39,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
+
+        etUser = findViewById(R.id.etUserLogin);
+        etPassword = findViewById(R.id.etPasswordLogin);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnSignup = findViewById(R.id.btnSignup);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String username = etUser.getText().toString();
+                String password = etPassword.getText().toString();
+                loginUser(username, password);
+            }
+        });
+    }
+
+    private void loginUser(String username, String password) {
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                // If an exception occurs send a log
+                if (e != null){
+                    Log.e(TAG, "Parse login error", e);
+                    return;
+                }
+                Log.i(TAG,"SUCCESSFUL LOGIN");
+                // No issues, launch PostsActivity
+                //goToPostsActivity();
+            }
+        });
     }
 
     @Override
@@ -41,15 +81,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected! Yay!");
+                        Log.d(TAG, "Connected! Yay!");
 
                         // Now you can start interacting with App Remote
-                        connected();
+                        //connected();
                     }
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
+                        Log.e(TAG, throwable.getMessage(), throwable);
 
                         // Something went wrong when attempting to connect! Handle errors here
                     }
@@ -65,5 +105,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 }
