@@ -1,5 +1,6 @@
 package com.example.photostomusic;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.LogInCallback;
@@ -8,32 +9,30 @@ import com.parse.ParseUser;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
     public final String TAG = this.getClass().getSimpleName();
+    private static final String CLIENT_ID = "59a64c83ef024ea786df03a966505f91";
+    private static final int REQUEST_CODE = 1337;
+    private static final String REDIRECT_URI = "intent://";
 
     EditText etUser;
     EditText etPassword;
-    Button btnLogin;
+    Button btnParseLogin;
     Button btnSignup;
-
-    private static final String CLIENT_ID = "59a64c83ef024ea786df03a966505f91";
-    private static final String REDIRECT_URI = "intent://";
-    private SpotifyAppRemote mSpotifyAppRemote;
-
-    // Set the connection parameters
-    ConnectionParams connectionParams =
-            new ConnectionParams.Builder(CLIENT_ID)
-                    .setRedirectUri(REDIRECT_URI)
-                    .showAuthView(true)
-                    .build();
+    Button btnSpotifyLogin;
 
     // Comment goes here
     @Override
@@ -43,15 +42,29 @@ public class LoginActivity extends AppCompatActivity {
 
         etUser = findViewById(R.id.etUserLogin);
         etPassword = findViewById(R.id.etPasswordLogin);
-        btnLogin = findViewById(R.id.btnLogin);
+        btnParseLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
+        btnSpotifyLogin = findViewById(R.id.btnSpotifyLogin);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnParseLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = etUser.getText().toString();
                 String password = etPassword.getText().toString();
                 loginUser(username, password);
+            }
+        });
+        btnSpotifyLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Request code will be used to verify if result comes from the login activity. Can be set to any integer.
+                AuthenticationRequest.Builder builder =
+                        new AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+
+                builder.setScopes(new String[]{"streaming"});
+                AuthenticationRequest request = builder.build();
+
+                AuthenticationClient.openLoginActivity(LoginActivity.this, REQUEST_CODE, request);
             }
         });
     }
@@ -66,45 +79,42 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 Log.i(TAG,"SUCCESSFUL LOGIN");
-                // No issues, launch PostsActivity
-                //goToPostsActivity();
+                Toast.makeText(LoginActivity.this, "LOGGED IN", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d(TAG, "Connected! Yay!");
+        // Check if result comes from the correct activity
+        if (requestCode == REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
 
-                        // Now you can start interacting with App Remote
-                        //connected();
-                    }
+            switch (response.getType()) {
+                // Response was successful and contains auth token
+                case TOKEN:
+                    // Handle successful response
+                    Toast.makeText(this, "LOGGED IN", Toast.LENGTH_LONG).show();
+                    break;
 
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
+                // Auth flow returned an error
+                case ERROR:
+                    // Handle error response
+                    Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                    break;
 
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
-
-    }
-
-    private void connected() {
-        // Then we will write some more code here.
-        mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
+                // Most likely auth flow was cancelled
+                default:
+                    // Handle other cases
+            }
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+        //SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 }
