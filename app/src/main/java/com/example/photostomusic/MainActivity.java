@@ -6,18 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.parse.Parse;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
-public class CameraActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     // Visual elements of the activity
     Button btnLogout;
+    BottomNavigationView bottomNavigationView;
 
     // String used to capture the token passed through the Login intent
     String spotifyToken;
@@ -25,10 +22,11 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera);
+        setContentView(R.layout.activity_main);
 
         // Connect visual and logic parts
         btnLogout = findViewById(R.id.btnLogout);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // Get token from the intent extras
         spotifyToken = getIntent().getStringExtra("token");
@@ -39,7 +37,7 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ParseUser.logOut();
-                Intent i = new Intent(CameraActivity.this, LoginActivity.class);
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
             }
