@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment;
-                // TODO: Replace each case with their corresponding fragment
                 switch (item.getItemId()){
                     case R.id.action_camera:
                         Toast.makeText(MainActivity.this, "Camera", Toast.LENGTH_SHORT).show();

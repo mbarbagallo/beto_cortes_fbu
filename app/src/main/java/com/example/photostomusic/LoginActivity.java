@@ -17,16 +17,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-// TODO: Add docs to readme on GitHub
+// TODO: Add docs I am using to README on GitHub
 public class LoginActivity extends AppCompatActivity {
 
     // Class name used as TAG for debugging
     public final String TAG = this.getClass().getSimpleName();
 
     // PSF variables required to interact with the Spotify Auth API
+    // TODO: Hide keys and IDs on properties file
     private static final String CLIENT_ID = "59a64c83ef024ea786df03a966505f91";
-    // TODO: Replace code with a not so common number
-    private static final int REQUEST_CODE = 1337;
+    private static final int REQUEST_CODE = 1415926535;
     private static final String REDIRECT_URI = "intent://";
 
     // Visual components present on the activity
