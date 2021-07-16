@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+// TODO: Add docs to readme on GitHub
 public class LoginActivity extends AppCompatActivity {
 
     // Class name used as TAG for debugging
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // PSF variables required to interact with the Spotify Auth API
     private static final String CLIENT_ID = "59a64c83ef024ea786df03a966505f91";
+    // TODO: Replace code with a not so common number
     private static final int REQUEST_CODE = 1337;
     private static final String REDIRECT_URI = "intent://";
 
@@ -107,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // TODO: Check on result code to this conditions
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
