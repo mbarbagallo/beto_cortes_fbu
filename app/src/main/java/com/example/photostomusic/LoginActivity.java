@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSpotifyLogin;
 
     // String used to store the Spotify Auth Token
-    String spotifyToken;
+    String spotifyToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("token", spotifyToken);
                     startActivity(i);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
                 }
             }
