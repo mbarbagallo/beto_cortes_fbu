@@ -21,7 +21,6 @@ import com.parse.ParseUser;
 public class MainActivity extends AppCompatActivity {
 
     // Visual elements of the activity
-    Button btnLogout;
     BottomNavigationView bottomNavigationView;
 
     // String used to capture the token passed through the Login intent
@@ -42,18 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Get token from the intent extras
         spotifyToken = getIntent().getStringExtra("token");
-
-        // Logout of the Parse backend, looking for ways to logout of the Spotify API, not sure
-        // if possible as it is not present on the docs.
-        /*btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseUser.logOut();
-                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });*/
 
         // Set a listener for the bottom navigation view and each of its options, Android Studio
         // shows the method as deprecated but the docs do not mark it as such.

@@ -1,14 +1,20 @@
 package com.example.photostomusic.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.example.photostomusic.LoginActivity;
 import com.example.photostomusic.R;
+import com.parse.ParseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +31,10 @@ public class UserProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // Visual elements of the fragment
+    Button btnLogout;
+
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -62,5 +72,24 @@ public class UserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        btnLogout = view.findViewById(R.id.btnLogout);
+
+        // Logout of the Parse backend, looking for ways to logout of the Spotify API, not sure
+        // if possible as it is not present on the docs.
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logOut();
+                Intent i = new Intent(getActivity(), LoginActivity.class);
+                startActivity(i);
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                getActivity().finish();
+            }
+        });
     }
 }
