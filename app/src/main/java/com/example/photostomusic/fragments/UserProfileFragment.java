@@ -7,11 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.photostomusic.ColorFormActivity;
 import com.example.photostomusic.LoginActivity;
 import com.example.photostomusic.R;
 import com.parse.ParseUser;
@@ -23,10 +25,14 @@ import com.parse.ParseUser;
  */
 public class UserProfileFragment extends Fragment {
 
+    // Class name used as TAG for debugging
+    public final String TAG = this.getClass().getSimpleName();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final int COLOR_FORM_REQUEST_CDOE = 220700;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -34,6 +40,7 @@ public class UserProfileFragment extends Fragment {
 
     // Visual elements of the fragment
     Button btnLogout;
+    Button btnResetColorForm;
 
 
     public UserProfileFragment() {
@@ -78,6 +85,7 @@ public class UserProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnLogout = view.findViewById(R.id.btnLogout);
+        btnResetColorForm = view.findViewById(R.id.btnResetColorForm);
 
         // Logout of the Parse backend, looking for ways to logout of the Spotify API, not sure
         // if possible as it is not present on the docs.
@@ -86,9 +94,21 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 ParseUser.logOut();
                 Intent i = new Intent(getActivity(), LoginActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
                 startActivity(i);
                 getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 getActivity().finish();
+            }
+        });
+
+        // Go into color form activity to reset current color map
+        btnResetColorForm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ColorFormActivity.class);
+                getActivity().startActivityForResult(i, COLOR_FORM_REQUEST_CDOE);
+                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }

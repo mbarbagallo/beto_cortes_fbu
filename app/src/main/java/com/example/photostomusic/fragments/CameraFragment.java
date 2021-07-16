@@ -35,6 +35,8 @@ import java.io.IOException;
  */
 public class CameraFragment extends Fragment {
 
+
+    public final String TAG = this.getClass().getSimpleName();
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public String photoFileName = "photo.jpg";
     File photoFile;
@@ -146,11 +148,11 @@ public class CameraFragment extends Fragment {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "beto");
+        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d("beto", "failed to create directory");
+            Log.d(TAG, "failed to create directory");
         }
 
         // Return the file target for the photo based on filename

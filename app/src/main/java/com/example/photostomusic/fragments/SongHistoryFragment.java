@@ -1,6 +1,5 @@
 package com.example.photostomusic.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,9 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.photostomusic.LoginActivity;
 import com.example.photostomusic.R;
-import com.example.photostomusic.SongDetailActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,15 +75,25 @@ public class SongHistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        // Connect visual and logic parts
         btnTempSongDetail = view.findViewById(R.id.btnTempSongDetail);
 
+        // Button listener that sends to song detail fragment, will be swapped by a Recycler View
+        // Interface click handler in coming days.
         btnTempSongDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), SongDetailActivity.class);
-                startActivity(i);
-                getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                // Swap current fragment with song detail one, add animation to transition
+                SongDetailFragment nextFrag = new SongDetailFragment();
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(
+                                android.R.anim.fade_in,  // enter
+                                android.R.anim.fade_out // exit
+                        )
+                        .replace(R.id.flContainer, nextFrag, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }

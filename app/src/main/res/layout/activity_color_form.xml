@@ -4,13 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SongDetailActivity">
+    tools:context=".ColorFormActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Song detail activity"
+        android:text="Color Form goes here"
+        android:layout_above="@+id/btnConfirmColors"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+    />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm colors"
         android:layout_centerInParent="true"
-        />
+        android:id="@+id/btnConfirmColors"
+    />
 
 </RelativeLayout>

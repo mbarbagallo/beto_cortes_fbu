@@ -1,12 +1,14 @@
 package com.example.photostomusic;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Visual elements of the activity
     BottomNavigationView bottomNavigationView;
+    public final String TAG = this.getClass().getSimpleName();
+    public static final int COLOR_FORM_REQUEST_CDOE = 220700;
+
 
     // String used to capture the token passed through the Login intent
     String spotifyToken;
@@ -66,11 +71,30 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new CameraFragment();
                         break;
                 }
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                fragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                                android.R.anim.fade_in,  // enter
+                                android.R.anim.fade_out // exit
+                        )
+                        .replace(R.id.flContainer, fragment)
+                        .commit();
                 return true;
             }
         });
         // Set default selection
         bottomNavigationView.setSelectedItemId(R.id.action_camera);
+    }
+
+    // Check for result of other activities
+    // Current use is only for color form activity
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == COLOR_FORM_REQUEST_CDOE && resultCode == RESULT_OK){
+            // TODO: update color wheel when user returns form form
+            Log.i(TAG, "Color wheel updated successfully");
+        } else {
+            Log.e(TAG, "colors did not come through");
+        }
     }
 }
