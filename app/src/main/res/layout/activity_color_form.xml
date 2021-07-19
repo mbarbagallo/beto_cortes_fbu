@@ -7,20 +7,56 @@
     tools:context=".ColorFormActivity">
 
     <TextView
+        android:id="@+id/tvFormTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Color Form goes here"
-        android:layout_above="@+id/btnConfirmColors"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-    />
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="Colors and emotions"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <Button
+        android:id="@+id/btnConfirmColors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Confirm colors"
-        android:layout_centerInParent="true"
-        android:id="@+id/btnConfirmColors"
-    />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:text="Confirm colors" />
+
+    <TextView
+        android:id="@+id/tvFormInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFormTitle"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/color_form_instructions" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFormInstructions"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        app:backgroundTint="@color/black" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        app:backgroundTint="@color/black" />
 
 </RelativeLayout>
