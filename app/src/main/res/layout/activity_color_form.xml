@@ -51,7 +51,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_1"
+            android:id="@+id/redSpinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -82,7 +82,7 @@
         android:layout_marginTop="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_2"
+            android:id="@+id/violetSpinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overlapAnchor="false"
@@ -114,7 +114,7 @@
         android:layout_marginTop="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_3"
+            android:id="@+id/blueSpinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dropDownWidth="143dp"
@@ -144,7 +144,7 @@
         android:layout_marginEnd="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_4"
+            android:id="@+id/greenSpinner"
             android:layout_width="match_parent"
             android:dropDownWidth="143dp"
             android:layout_height="match_parent"
@@ -174,7 +174,7 @@
         android:layout_marginEnd="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_5"
+            android:id="@+id/yellowSpinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overlapAnchor="false"
@@ -204,7 +204,7 @@
         android:layout_marginEnd="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_6"
+            android:id="@+id/orangeSpinner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overlapAnchor="false"

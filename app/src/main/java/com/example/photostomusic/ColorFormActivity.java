@@ -24,12 +24,12 @@ public class ColorFormActivity extends AppCompatActivity {
 
     // Visual elements of the activity
     Button btnConfirmColors;
-    AppCompatSpinner spinner1;
-    AppCompatSpinner spinner2;
-    AppCompatSpinner spinner3;
-    AppCompatSpinner spinner4;
-    AppCompatSpinner spinner5;
-    AppCompatSpinner spinner6;
+    AppCompatSpinner redSpinner;
+    AppCompatSpinner violetSpinner;
+    AppCompatSpinner blueSpinner;
+    AppCompatSpinner greenSpinner;
+    AppCompatSpinner yellowSpinner;
+    AppCompatSpinner orangeSpinner;
 
     // Temp list used to test dropdowns
     List<String> emotions = new ArrayList<String>(Arrays.asList(
@@ -51,12 +51,12 @@ public class ColorFormActivity extends AppCompatActivity {
 
         // Connect visual and logic elements
         btnConfirmColors = findViewById(R.id.btnConfirmColors);
-        spinner1 = findViewById(R.id.spinner_1);
-        spinner2 = findViewById(R.id.spinner_2);
-        spinner3 = findViewById(R.id.spinner_3);
-        spinner4 = findViewById(R.id.spinner_4);
-        spinner5 = findViewById(R.id.spinner_5);
-        spinner6 = findViewById(R.id.spinner_6);
+        redSpinner = findViewById(R.id.redSpinner);
+        violetSpinner = findViewById(R.id.violetSpinner);
+        blueSpinner = findViewById(R.id.blueSpinner);
+        greenSpinner = findViewById(R.id.greenSpinner);
+        yellowSpinner = findViewById(R.id.yellowSpinner);
+        orangeSpinner = findViewById(R.id.orangeSpinner);
 
         // Add listener to confirm button, set a RESULT_OK code for the activity if the form is valid
         btnConfirmColors.setOnClickListener(new View.OnClickListener() {
@@ -85,18 +85,17 @@ public class ColorFormActivity extends AppCompatActivity {
                     // Option was unused, set current selection
                     parent.setSelection(position);
                 }
-                Log.i("beto", parent.getSelectedItem().toString());
             }
 
             // Function to check if option has been selected on any other spinner
             private boolean checkIfUsed(String item) {
                 // Currently checking only 2 test spinners
-                usedOptions.add(spinner1.getSelectedItem().toString());
-                usedOptions.add(spinner2.getSelectedItem().toString());
-                usedOptions.add(spinner3.getSelectedItem().toString());
-                usedOptions.add(spinner4.getSelectedItem().toString());
-                usedOptions.add(spinner5.getSelectedItem().toString());
-                usedOptions.add(spinner6.getSelectedItem().toString());
+                usedOptions.add(redSpinner.getSelectedItem().toString());
+                usedOptions.add(violetSpinner.getSelectedItem().toString());
+                usedOptions.add(blueSpinner.getSelectedItem().toString());
+                usedOptions.add(greenSpinner.getSelectedItem().toString());
+                usedOptions.add(yellowSpinner.getSelectedItem().toString());
+                usedOptions.add(orangeSpinner.getSelectedItem().toString());
 
                 if (!usedOptions.contains(item)){
                     // Option is not being used, clear set for next usage of function
@@ -120,30 +119,30 @@ public class ColorFormActivity extends AppCompatActivity {
         genericAdapter.setDropDownViewResource(R.layout.layout_spinner_item);
 
         // Set the generic adapter to all the spinners
-        spinner1.setAdapter(genericAdapter);
-        spinner1.setSelection(0);
+        redSpinner.setAdapter(genericAdapter);
+        redSpinner.setSelection(0);
 
-        spinner2.setAdapter(genericAdapter);
-        spinner2.setSelection(0);
+        violetSpinner.setAdapter(genericAdapter);
+        violetSpinner.setSelection(0);
 
-        spinner3.setAdapter(genericAdapter);
-        spinner3.setSelection(0);
+        blueSpinner.setAdapter(genericAdapter);
+        blueSpinner.setSelection(0);
 
-        spinner4.setAdapter(genericAdapter);
-        spinner4.setSelection(0);
+        greenSpinner.setAdapter(genericAdapter);
+        greenSpinner.setSelection(0);
 
-        spinner5.setAdapter(genericAdapter);
-        spinner5.setSelection(0);
+        yellowSpinner.setAdapter(genericAdapter);
+        yellowSpinner.setSelection(0);
 
-        spinner6.setAdapter(genericAdapter);
-        spinner6.setSelection(0);
+        orangeSpinner.setAdapter(genericAdapter);
+        orangeSpinner.setSelection(0);
 
         // Set the generic listener as the listener for both of the test spinners
-        spinner1.setOnItemSelectedListener(genericListener);
-        spinner2.setOnItemSelectedListener(genericListener);
-        spinner3.setOnItemSelectedListener(genericListener);
-        spinner4.setOnItemSelectedListener(genericListener);
-        spinner5.setOnItemSelectedListener(genericListener);
-        spinner6.setOnItemSelectedListener(genericListener);
+        redSpinner.setOnItemSelectedListener(genericListener);
+        violetSpinner.setOnItemSelectedListener(genericListener);
+        blueSpinner.setOnItemSelectedListener(genericListener);
+        greenSpinner.setOnItemSelectedListener(genericListener);
+        yellowSpinner.setOnItemSelectedListener(genericListener);
+        orangeSpinner.setOnItemSelectedListener(genericListener);
     }
 }
