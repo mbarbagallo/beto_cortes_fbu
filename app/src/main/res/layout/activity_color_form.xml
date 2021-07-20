@@ -47,6 +47,9 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="90dp"
+        android:layout_alignEnd="@+id/btnConfirmColors"
+        android:overlapAnchor="false"
         app:backgroundTint="@color/black" />
 
     <androidx.appcompat.widget.AppCompatSpinner
@@ -57,6 +60,64 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="90dp"
+        android:layout_alignEnd="@+id/btnConfirmColors"
+        android:layout_toStartOf="@+id/spinner_5"
+        android:overlapAnchor="false"
         app:backgroundTint="@color/black" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_2"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="90dp"
+        android:layout_alignEnd="@+id/btnConfirmColors"
+        android:layout_toStartOf="@+id/spinner_6"
+        android:overlapAnchor="false"
+        app:backgroundTint="@color/black" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFormInstructions"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="90dp"
+        android:layout_alignStart="@+id/btnConfirmColors"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:overlapAnchor="false"
+        app:backgroundTint="@color/black" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_4"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="90dp"
+        android:layout_alignStart="@+id/btnConfirmColors"
+        android:overlapAnchor="false"
+        app:backgroundTint="@color/black" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_5"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="90dp"
+        android:layout_alignStart="@+id/btnConfirmColors"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:overlapAnchor="false"
+        app:backgroundTint="@color/black" />
+
 
 </RelativeLayout>

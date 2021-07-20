@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-// TODO: Add docs I am using to README on GitHub
 public class LoginActivity extends AppCompatActivity {
 
     // Class name used as TAG for debugging

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,16 +26,21 @@ public class ColorFormActivity extends AppCompatActivity {
     Button btnConfirmColors;
     AppCompatSpinner spinner1;
     AppCompatSpinner spinner2;
+    AppCompatSpinner spinner3;
+    AppCompatSpinner spinner4;
+    AppCompatSpinner spinner5;
+    AppCompatSpinner spinner6;
 
     // Temp list used to test dropdowns
-    // TODO: Replace categories list with final emotions list
-    List<String> categories = new ArrayList<String>();
+    List<String> emotions = new ArrayList<String>(Arrays.asList(
+            "default", "Joy", "Trust", "Fear", "Surprise",
+            "Sadness", "Disgust", "Anger", "Alert"));
 
     // List used to contain all currently selected options
     Set<String> usedOptions = new HashSet<String>();
 
     // List used to hold all previously selected items
-    AdapterView.OnItemSelectedListener genericAdapter;
+    AdapterView.OnItemSelectedListener genericListener;
 
 
 
@@ -47,6 +53,10 @@ public class ColorFormActivity extends AppCompatActivity {
         btnConfirmColors = findViewById(R.id.btnConfirmColors);
         spinner1 = findViewById(R.id.spinner_1);
         spinner2 = findViewById(R.id.spinner_2);
+        spinner3 = findViewById(R.id.spinner_3);
+        spinner4 = findViewById(R.id.spinner_4);
+        spinner5 = findViewById(R.id.spinner_5);
+        spinner6 = findViewById(R.id.spinner_6);
 
         // Add listener to confirm button, set a RESULT_OK code for the activity if the form is valid
         btnConfirmColors.setOnClickListener(new View.OnClickListener() {
@@ -60,25 +70,8 @@ public class ColorFormActivity extends AppCompatActivity {
             }
         });
 
-        categories.add("default");
-        for (int i = 0; i < 6; i++){
-            categories.add("word " + i);
-        }
-
-        // Adapters for the 2 temporal spinners being used for testing
-        ArrayAdapter<String> spinnerAdapter1 = new ArrayAdapter<String>(this, R.layout.layout_spinner_item, categories);
-        spinnerAdapter1.setDropDownViewResource(R.layout.layout_spinner_item);
-        spinner1.setAdapter(spinnerAdapter1);
-        spinner1.setSelection(0);
-
-        ArrayAdapter<String> spinnerAdapter2 = new ArrayAdapter<String>(this, R.layout.layout_spinner_item, categories);
-        spinnerAdapter2.setDropDownViewResource(R.layout.layout_spinner_item);
-        spinner2.setAdapter(spinnerAdapter2);
-        spinner2.setSelection(0);
-
-
         // Generic adapter to be used by all the spinners as they share the same functionality
-        genericAdapter = new AdapterView.OnItemSelectedListener() {
+        genericListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                 // Set user selection to "default" but keep what option they chose
@@ -100,6 +93,11 @@ public class ColorFormActivity extends AppCompatActivity {
                 // Currently checking only 2 test spinners
                 usedOptions.add(spinner1.getSelectedItem().toString());
                 usedOptions.add(spinner2.getSelectedItem().toString());
+                usedOptions.add(spinner3.getSelectedItem().toString());
+                usedOptions.add(spinner4.getSelectedItem().toString());
+                usedOptions.add(spinner5.getSelectedItem().toString());
+                usedOptions.add(spinner6.getSelectedItem().toString());
+
                 if (!usedOptions.contains(item)){
                     // Option is not being used, clear set for next usage of function
                     // validate selection
@@ -118,8 +116,34 @@ public class ColorFormActivity extends AppCompatActivity {
             }
         };
 
-        // Set the generic adapter as the adapter for both of the test spinners
-        spinner1.setOnItemSelectedListener(genericAdapter);
-        spinner2.setOnItemSelectedListener(genericAdapter);
+        ArrayAdapter genericAdapter = new ArrayAdapter<String>(this, R.layout.layout_spinner_item, emotions);
+        genericAdapter.setDropDownViewResource(R.layout.layout_spinner_item);
+
+        // Set the generic adapter to all the spinners
+        spinner1.setAdapter(genericAdapter);
+        spinner1.setSelection(0);
+
+        spinner2.setAdapter(genericAdapter);
+        spinner2.setSelection(0);
+
+        spinner3.setAdapter(genericAdapter);
+        spinner3.setSelection(0);
+
+        spinner4.setAdapter(genericAdapter);
+        spinner4.setSelection(0);
+
+        spinner5.setAdapter(genericAdapter);
+        spinner5.setSelection(0);
+
+        spinner6.setAdapter(genericAdapter);
+        spinner6.setSelection(0);
+
+        // Set the generic listener as the listener for both of the test spinners
+        spinner1.setOnItemSelectedListener(genericListener);
+        spinner2.setOnItemSelectedListener(genericListener);
+        spinner3.setOnItemSelectedListener(genericListener);
+        spinner4.setOnItemSelectedListener(genericListener);
+        spinner5.setOnItemSelectedListener(genericListener);
+        spinner6.setOnItemSelectedListener(genericListener);
     }
 }
