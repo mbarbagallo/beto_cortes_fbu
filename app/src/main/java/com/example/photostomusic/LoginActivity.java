@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Missing spotify login", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    Toast.makeText(LoginActivity.this, "LOGGED IN", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "LOGGED IN", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("token", spotifyToken);
                     startActivity(i);

@@ -56,15 +56,15 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment;
                 switch (item.getItemId()){
                     case R.id.action_camera:
-                        Toast.makeText(MainActivity.this, "Camera", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "Camera", Toast.LENGTH_SHORT).show();
                         fragment = new CameraFragment();
                         break;
                     case R.id.action_history:
-                        Toast.makeText(MainActivity.this, "History", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "History", Toast.LENGTH_SHORT).show();
                         fragment = new SongHistoryFragment();
                         break;
                     case R.id.action_user:
-                        Toast.makeText(MainActivity.this, "User", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "User", Toast.LENGTH_SHORT).show();
                         fragment = new UserProfileFragment();
                         break;
                     default:
@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Check for result of other activities
     // Current use is only for color form activity
+    // TODO: Add switch to check which activity returned a result
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

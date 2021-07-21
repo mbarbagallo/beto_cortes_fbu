@@ -3,6 +3,7 @@ package com.example.photostomusic.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,9 +25,20 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.photostomusic.R;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +61,7 @@ public class CameraFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    List<List<Integer>> pixels;
 
     // Visual elements of the fragment
     Button btnPictureCapture;
@@ -129,17 +142,18 @@ public class CameraFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == getActivity().RESULT_OK) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {
                 // by this point we have the camera photo on disk
                 Bitmap takenImage = rotateBitmapOrientation(photoFile.getAbsolutePath());
-                // RESIZE BITMAP, see section below
                 // Load the taken image into a preview
                 ImageView ivPreview = (ImageView) getActivity().findViewById(R.id.ivPreview);
                 ivPreview.setImageBitmap(takenImage);
-            } else { // Result was a failure
-                Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
-            }
+                List< List<Integer> > colors = getRGBs(takenImage);
+                Log.i("beto", colors.toString());
+                imageMainColors(colors);
+
+        } else { // Result was a failure
+            Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -148,11 +162,11 @@ public class CameraFragment extends Fragment {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
+        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "beto");
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.d(TAG, "failed to create directory");
+            Log.e(TAG, "failed to create directory");
         }
 
         // Return the file target for the photo based on filename
@@ -188,5 +202,51 @@ public class CameraFragment extends Fragment {
         // Return result
         return rotatedBitmap;
     }
+
+    public List<List <Integer> > getRGBs(Bitmap image){
+        // Get image sizes to iterate over each pixel
+        int y = image.getHeight();
+        int x = image.getWidth();
+
+        // Set an empty nested list to hold the colors
+        List<List<Integer> > colors = new ArrayList<>();
+        // Temporal list to add to values to it
+        List<Integer> tempPixel = new ArrayList<>();
+
+        // Nested for to iterate over every pixel
+        for (int j=0; j < y; j++){
+            // Clear list to make it is empty
+            tempPixel.clear();
+            for (int i=0; i < x; i++){
+                // Get pixel at current position
+                int colour = image.getPixel(i, j);
+
+                // Extract colors of said pixel and add values to temporal list
+                tempPixel.add(Color.red(colour));
+                tempPixel.add(Color.blue(colour));
+                tempPixel.add(Color.green(colour));
+            }
+            // Add temporal list to list holding all the other pixels
+            colors.add(tempPixel);
+        }
+        return colors;
+    }
+
+    public HashMap<String, String> imageMainColors(List<List <Integer> > colors) {
+        ParseUser user = ParseUser.getCurrentUser();
+        HashMap<String, String> map = (HashMap<String, String>) user.get("ColorRelation");
+        HashMap <String, String> frequencies = new HashMap<>();
+
+        assert map != null;
+        Log.i(TAG, map.toString() + " " + map.getClass().getName());
+        /*
+        assert obj != null;
+        HashMap<String, String> frequencies = new Gson().fromJson(obj.toString(), HashMap.class);
+        Log.i(TAG, frequencies.toString());*/
+
+        return frequencies;
+    }
+
+
 
 }
