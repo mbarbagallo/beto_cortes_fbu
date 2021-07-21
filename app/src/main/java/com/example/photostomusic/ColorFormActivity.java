@@ -10,9 +10,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,8 +43,8 @@ public class ColorFormActivity extends AppCompatActivity {
 
     // Temp list used to test dropdowns
     List<String> emotions = new ArrayList<String>(Arrays.asList(
-            "default", "Joy", "Trust", "Fear", "Surprise",
-            "Sadness", "Disgust", "Anger", "Alert"));
+            "default", "Happy", "Tranquil", "Scared", "Amazed",
+            "Sad", "Tired", "Angry", "Alert"));
 
     // List used to contain all currently selected options
     Set<String> usedOptions = new HashSet<String>();
@@ -62,11 +72,39 @@ public class ColorFormActivity extends AppCompatActivity {
         btnConfirmColors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: validate color form before setting results
-                // TODO: add new color dictionary to intent, upload to Parse and send it through
-                Intent i = new Intent();
-                setResult(RESULT_OK, i);
-                finish();
+                HashMap<String, String> map = new HashMap<String, String>() {{
+                    put("FF0000", redSpinner.getSelectedItem().toString());
+                    put("634598", violetSpinner.getSelectedItem().toString());
+                    put("2196F3", blueSpinner.getSelectedItem().toString());
+                    put("4CAF50", greenSpinner.getSelectedItem().toString());
+                    put("FFEB3B", yellowSpinner.getSelectedItem().toString());
+                    put("FF9800", orangeSpinner.getSelectedItem().toString());
+                }};
+                if (map.containsValue("default")){
+                    Toast.makeText(ColorFormActivity.this, "Please don't leave any selector as 'default'.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                JSONObject toUpload = new JSONObject(map);
+
+                // Retrieve the user
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    currentUser.put("ColorRelations", toUpload);
+
+                    // Saves the object.
+                    currentUser.saveInBackground(e -> {
+                        if(e==null){
+                            //Save successful
+                            Toast.makeText(ColorFormActivity.this, "Save Successful", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent();
+                            setResult(RESULT_OK, i);
+                            finish();
+                        }else{
+                            // Something went wrong while saving
+                            Toast.makeText(ColorFormActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
 
