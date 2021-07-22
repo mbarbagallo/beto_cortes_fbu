@@ -25,20 +25,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.photostomusic.R;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+
+import models.Song;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,7 +47,7 @@ public class CameraFragment extends Fragment {
 
 
     public final String TAG = this.getClass().getSimpleName();
-    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 220700;
     public String photoFileName = "photo.jpg";
     File photoFile;
 
@@ -61,7 +59,8 @@ public class CameraFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    List<List<Integer>> pixels;
+    HashMap<String, String> map;
+    ParseUser user;
 
     // Visual elements of the fragment
     Button btnPictureCapture;
@@ -95,6 +94,7 @@ public class CameraFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -109,6 +109,8 @@ public class CameraFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         btnPictureCapture = view.findViewById(R.id.btnImageCapture);
+        user = ParseUser.getCurrentUser();
+        map = (HashMap<String, String>) user.get("ColorRelation");
 
         btnPictureCapture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,9 +150,10 @@ public class CameraFragment extends Fragment {
                 // Load the taken image into a preview
                 ImageView ivPreview = (ImageView) getActivity().findViewById(R.id.ivPreview);
                 ivPreview.setImageBitmap(takenImage);
-                List< List<Integer> > colors = getRGBs(takenImage);
-                Log.i("beto", colors.toString());
-                imageMainColors(colors);
+                // Hashmap of color frequencies
+                // TODO: Send this method call to loading screen
+                // TODO: Sort frequencies map by values and get first 3 values
+                HashMap<String, Integer> colors = getRGBs(takenImage);
 
         } else { // Result was a failure
             Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
@@ -203,50 +206,47 @@ public class CameraFragment extends Fragment {
         return rotatedBitmap;
     }
 
-    public List<List <Integer> > getRGBs(Bitmap image){
+    public HashMap<String, Integer> getRGBs(Bitmap image){
         // Get image sizes to iterate over each pixel
         int y = image.getHeight();
         int x = image.getWidth();
 
-        // Set an empty nested list to hold the colors
-        List<List<Integer> > colors = new ArrayList<>();
-        // Temporal list to add to values to it
-        List<Integer> tempPixel = new ArrayList<>();
+        // Map used to count the appearances of each main color of an image
+        HashMap <String, Integer> frequencies = new HashMap<>();
 
         // Nested for to iterate over every pixel
         for (int j=0; j < y; j++){
-            // Clear list to make it is empty
-            tempPixel.clear();
             for (int i=0; i < x; i++){
                 // Get pixel at current position
                 int colour = image.getPixel(i, j);
-
                 // Extract colors of said pixel and add values to temporal list
-                tempPixel.add(Color.red(colour));
-                tempPixel.add(Color.blue(colour));
-                tempPixel.add(Color.green(colour));
+                int red = Color.red(colour);
+                int green = Color.green(colour);
+                int blue = Color.blue(colour);
+
+                String color = euclideanDistance(red, green, blue);
+                // TODO: Use color as key for the frequencies map and increase value by one
             }
-            // Add temporal list to list holding all the other pixels
-            colors.add(tempPixel);
         }
-        return colors;
-    }
-
-    public HashMap<String, String> imageMainColors(List<List <Integer> > colors) {
-        ParseUser user = ParseUser.getCurrentUser();
-        HashMap<String, String> map = (HashMap<String, String>) user.get("ColorRelation");
-        HashMap <String, String> frequencies = new HashMap<>();
-
-        assert map != null;
-        Log.i(TAG, map.toString() + " " + map.getClass().getName());
-        /*
-        assert obj != null;
-        HashMap<String, String> frequencies = new Gson().fromJson(obj.toString(), HashMap.class);
-        Log.i(TAG, frequencies.toString());*/
-
         return frequencies;
     }
 
-
-
+    // Method to get the closest base color of the app to a color point passed
+    // The idea is to handle color as a 3D vector space, with euclidean distance
+    // it is possible to find the closest color to any other color, both interpreted
+    // as points on said space.
+    private String euclideanDistance(int red, int green, int blue) {
+        HashMap<String, Integer> distances = new HashMap<>();
+        for (String key: map.keySet()){
+            int[] base = new int[3];
+            for (int i = 0; i < 3; i++) {
+                base[i] = Integer.parseInt(key.substring(i * 2, i * 2 + 2), 16);
+            }
+            int distance = (int) Math.sqrt(Math.pow(base[0] - red, 2) + Math.pow(base[1] - green, 2) + Math.pow(base[2] - blue, 2));
+            distances.put(key, distance);
+        }
+        Log.d("beto", "euclideanDistance: " + distances.toString());
+        // TODO: Return key with max value
+        return "";
+    }
 }
