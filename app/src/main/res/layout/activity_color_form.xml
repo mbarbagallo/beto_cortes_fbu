@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ColorFormActivity">
+
+    <TextView
+        android:id="@+id/tvFormTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="Colors and emotions"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <Button
+        android:id="@+id/btnConfirmColors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:text="Confirm colors" />
+
+    <TextView
+        android:id="@+id/tvFormInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFormTitle"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/color_form_instructions" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardRedDropdown"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/tvFormInstructions"
+        android:layout_alignEnd="@+id/btnConfirmColors"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="90dp"
+        >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/redSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:dropDownWidth="143dp"
+            android:overlapAnchor="false"
+            app:backgroundTint="#00FF0000" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            app:tint="@color/red"
+            android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardVioletDropdown"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardRedDropdown"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_alignEnd="@+id/btnConfirmColors"
+        android:layout_marginEnd="90dp"
+        android:layout_marginTop="30dp" >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/violetSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overlapAnchor="false"
+            android:dropDownWidth="143dp"
+            app:backgroundTint="#00FF0000" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            app:tint="#634598"
+            android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardBlueDropdown"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardVioletDropdown"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_alignEnd="@+id/btnConfirmColors"
+        android:layout_marginEnd="90dp"
+        android:layout_marginTop="30dp" >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/blueSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dropDownWidth="143dp"
+            android:overlapAnchor="false"
+            app:backgroundTint="#00FF0000" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            app:tint="#2196F3"
+            android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGreenDropdown"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/tvFormInstructions"
+        android:layout_alignStart="@+id/btnConfirmColors"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/greenSpinner"
+            android:layout_width="match_parent"
+            android:dropDownWidth="143dp"
+            android:layout_height="match_parent"
+            android:overlapAnchor="false"
+            app:backgroundTint="#00FF0000" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            app:tint="#4CAF50"
+            android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardYellowDropdown"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardGreenDropdown"
+        android:layout_alignStart="@+id/btnConfirmColors"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/yellowSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overlapAnchor="false"
+            android:dropDownWidth="143dp"
+            app:backgroundTint="#00FF0000" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            app:tint="#FFEB3B"
+            android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardOrangeDropdown"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardYellowDropdown"
+        android:layout_alignStart="@+id/btnConfirmColors"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/orangeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overlapAnchor="false"
+            android:dropDownWidth="143dp"
+            app:backgroundTint="#00FF0000" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            app:tint="#FF9800"
+            android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
