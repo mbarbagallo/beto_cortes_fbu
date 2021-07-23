@@ -29,6 +29,7 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,8 +45,6 @@ public class CameraFragment extends Fragment {
 
     public final String TAG = this.getClass().getSimpleName();
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 220700;
-    public String photoFileName = "photo.jpg";
-    File photoFile;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -107,6 +106,7 @@ public class CameraFragment extends Fragment {
         btnPictureCapture = view.findViewById(R.id.btnImageCapture);
         user = ParseUser.getCurrentUser();
         map = (HashMap<String, String>) user.get("ColorRelation");
+        Log.d(TAG, map.toString());
 
         btnPictureCapture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,17 +120,8 @@ public class CameraFragment extends Fragment {
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName);
 
-        // wrap File object into a content provider
-        // required for API >= 24
-        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(getActivity(), "com.codepath.fileprovider", photoFile);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
-        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-        // So as long as the result is not null, it's safe to use the intent.
+        // Check if the device is capable of taking pictures
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
@@ -141,66 +132,23 @@ public class CameraFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == getActivity().RESULT_OK) {
-                // by this point we have the camera photo on disk
-                Bitmap takenImage = rotateBitmapOrientation(photoFile.getAbsolutePath());
+                // Get the photo from the extras of the camera activity
+                Bundle extras = data.getExtras();
+                Bitmap photo = (Bitmap) extras.get("data");
+
                 // Load the taken image into a preview
-                ImageView ivPreview = (ImageView) getActivity().findViewById(R.id.ivPreview);
-                ivPreview.setImageBitmap(takenImage);
+                ImageView ivPreview = getActivity().findViewById(R.id.ivPreview);
+                ivPreview.setImageBitmap(photo);
                 // Hashmap of color frequencies
                 // TODO: Send this method call to loading screen
                 // TODO: Sort frequencies map by values and get first 3 values
-                HashMap<String, Integer> colors = getRGBs(takenImage);
+                HashMap<String, Integer> colors = getRGBs(photo);
 
         } else { // Result was a failure
             Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Returns the File for a photo stored on disk given the fileName
-    public File getPhotoFileUri(String fileName) {
-        // Get safe storage directory for photos
-        // Use `getExternalFilesDir` on Context to access package-specific directories.
-        // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
-            Log.e(TAG, "failed to create directory");
-        }
-
-        // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
-        return file;
-    }
-
-    public Bitmap rotateBitmapOrientation(String photoFilePath) {
-        // Create and configure BitmapFactory
-        BitmapFactory.Options bounds = new BitmapFactory.Options();
-        bounds.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(photoFilePath, bounds);
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        Bitmap bm = BitmapFactory.decodeFile(photoFilePath, opts);
-        // Read EXIF Data
-        ExifInterface exif = null;
-        try {
-            exif = new ExifInterface(photoFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
-        int orientation = orientString != null ? Integer.parseInt(orientString) : ExifInterface.ORIENTATION_NORMAL;
-        int rotationAngle = 0;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180;
-        if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270;
-        // Rotate Bitmap
-        Matrix matrix = new Matrix();
-        matrix.setRotate(rotationAngle, (float) bm.getWidth() / 2, (float) bm.getHeight() / 2);
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bm, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true);
-        // Return result
-        return rotatedBitmap;
-    }
 
     public HashMap<String, Integer> getRGBs(Bitmap image){
         // Get image sizes to iterate over each pixel
@@ -209,12 +157,14 @@ public class CameraFragment extends Fragment {
 
         // Map used to count the appearances of each main color of an image
         HashMap <String, Integer> frequencies = new HashMap<String, Integer>() {{
-            put("FF0000", 0);
+            put("EC4741", 0);
             put("634598", 0);
             put("2196F3", 0);
             put("4CAF50", 0);
             put("FFEB3B", 0);
-            put("FF9800", 0);
+            put("B17419", 0);
+            put("B3B2B7", 0);
+            put("000000", 0);
         }};
 
         // Nested for to iterate over every pixel
@@ -261,11 +211,13 @@ public class CameraFragment extends Fragment {
             for (int i = 0; i < 3; i++) {
                 base[i] = Integer.parseInt(key.substring(i * 2, i * 2 + 2), 16);
             }
+            //Log.d(TAG, Arrays.toString(base) + " " + key);
             // Euclidean distance in 3D space
             int distance = (int) Math.sqrt( Math.pow(base[0] - red, 2) + Math.pow(base[1] - green, 2) + Math.pow(base[2] - blue, 2) );
             // Add distance to HashMap
             distances.put(key, distance);
         }
+        //Log.d(TAG,"RGB: " + red + " " + green + " " + blue);
 
         // Get minimal distance between the color and all the bases
         Map.Entry<String, Integer> minDistance = null;
@@ -278,6 +230,7 @@ public class CameraFragment extends Fragment {
             }
         }
         // Return the base with the closest distance
+        //Log.d(TAG, distances.toString());
         return minDistance.getKey();
     }
 }

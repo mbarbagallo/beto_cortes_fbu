@@ -2,11 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.photostomusic">
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
     <queries>
 
         <!-- Camera -->
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
+
         </intent>
     </queries>
 

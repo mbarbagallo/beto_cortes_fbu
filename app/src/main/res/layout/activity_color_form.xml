@@ -64,7 +64,7 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="@color/red"
+            app:tint="#ec4741"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
@@ -127,6 +127,36 @@
             android:layout_margin="5dp"
             android:layout_gravity="end"
             app:tint="#2196F3"
+            android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardBlackDropdown"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardBlueDropdown"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_alignEnd="@+id/btnConfirmColors"
+        android:layout_marginEnd="90dp"
+        android:layout_marginTop="30dp" >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/blackSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dropDownWidth="143dp"
+            android:overlapAnchor="false"
+            app:backgroundTint="#00FF0000" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            app:tint="#000000"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
@@ -216,7 +246,38 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#FF9800"
+            app:tint="#B17419"
+            android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardWhiteDropdown"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardOrangeDropdown"
+        android:layout_alignStart="@+id/btnConfirmColors"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/graySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overlapAnchor="false"
+            android:dropDownWidth="143dp"
+            app:backgroundTint="#00FF0000" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            app:tint="#b3b2b7"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 

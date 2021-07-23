@@ -5,17 +5,12 @@ import androidx.appcompat.widget.AppCompatSpinner;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONObject;
@@ -40,6 +35,8 @@ public class ColorFormActivity extends AppCompatActivity {
     AppCompatSpinner greenSpinner;
     AppCompatSpinner yellowSpinner;
     AppCompatSpinner orangeSpinner;
+    AppCompatSpinner graySpinner;
+    AppCompatSpinner blackSpinner;
 
     // Temp list used to test dropdowns
     List<String> emotions = new ArrayList<String>(Arrays.asList(
@@ -67,18 +64,22 @@ public class ColorFormActivity extends AppCompatActivity {
         greenSpinner = findViewById(R.id.greenSpinner);
         yellowSpinner = findViewById(R.id.yellowSpinner);
         orangeSpinner = findViewById(R.id.orangeSpinner);
+        graySpinner = findViewById(R.id.graySpinner);
+        blackSpinner = findViewById(R.id.blackSpinner);
 
         // Add listener to confirm button, set a RESULT_OK code for the activity if the form is valid
         btnConfirmColors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, String> map = new HashMap<String, String>() {{
-                    put("FF0000", redSpinner.getSelectedItem().toString());
+                    put("EC4741", redSpinner.getSelectedItem().toString());
                     put("634598", violetSpinner.getSelectedItem().toString());
                     put("2196F3", blueSpinner.getSelectedItem().toString());
                     put("4CAF50", greenSpinner.getSelectedItem().toString());
                     put("FFEB3B", yellowSpinner.getSelectedItem().toString());
-                    put("FF9800", orangeSpinner.getSelectedItem().toString());
+                    put("B17419", orangeSpinner.getSelectedItem().toString());
+                    put("B3B2B7", graySpinner.getSelectedItem().toString());
+                    put("000000", blackSpinner.getSelectedItem().toString());
                 }};
                 if (map.containsValue("default")){
                     Toast.makeText(ColorFormActivity.this, "Please don't leave any selector as 'default'.", Toast.LENGTH_SHORT).show();
@@ -89,7 +90,7 @@ public class ColorFormActivity extends AppCompatActivity {
                 // Retrieve the user
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 if (currentUser != null) {
-                    currentUser.put("ColorRelations", toUpload);
+                    currentUser.put("ColorRelation", toUpload);
 
                     // Saves the object.
                     currentUser.saveInBackground(e -> {
@@ -127,6 +128,9 @@ public class ColorFormActivity extends AppCompatActivity {
 
             // Function to check if option has been selected on any other spinner
             private boolean checkIfUsed(String item) {
+                if (item.equals("default")){
+                    return false;
+                }
                 // Currently checking only 2 test spinners
                 usedOptions.add(redSpinner.getSelectedItem().toString());
                 usedOptions.add(violetSpinner.getSelectedItem().toString());
@@ -134,6 +138,8 @@ public class ColorFormActivity extends AppCompatActivity {
                 usedOptions.add(greenSpinner.getSelectedItem().toString());
                 usedOptions.add(yellowSpinner.getSelectedItem().toString());
                 usedOptions.add(orangeSpinner.getSelectedItem().toString());
+                usedOptions.add(graySpinner.getSelectedItem().toString());
+                usedOptions.add(blackSpinner.getSelectedItem().toString());
 
                 if (!usedOptions.contains(item)){
                     // Option is not being used, clear set for next usage of function
@@ -142,6 +148,7 @@ public class ColorFormActivity extends AppCompatActivity {
                     return true;
                 } else {
                     // Option is being used, reject selection and clear set for next usage
+                    Toast.makeText(ColorFormActivity.this, "Option " + item + " is already in use", Toast.LENGTH_SHORT).show();
                     usedOptions.clear();
                     return false;
                 }
@@ -175,6 +182,12 @@ public class ColorFormActivity extends AppCompatActivity {
         orangeSpinner.setAdapter(genericAdapter);
         orangeSpinner.setSelection(0);
 
+        graySpinner.setAdapter(genericAdapter);
+        graySpinner.setSelection(0);
+
+        blackSpinner.setAdapter(genericAdapter);
+        blackSpinner.setSelection(0);
+
         // Set the generic listener as the listener for both of the test spinners
         redSpinner.setOnItemSelectedListener(genericListener);
         violetSpinner.setOnItemSelectedListener(genericListener);
@@ -182,5 +195,6 @@ public class ColorFormActivity extends AppCompatActivity {
         greenSpinner.setOnItemSelectedListener(genericListener);
         yellowSpinner.setOnItemSelectedListener(genericListener);
         orangeSpinner.setOnItemSelectedListener(genericListener);
+        graySpinner.setOnItemSelectedListener(genericListener);
     }
 }
