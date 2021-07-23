@@ -29,11 +29,7 @@ import com.parse.ParseUser;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import models.Song;
@@ -165,7 +161,7 @@ public class CameraFragment extends Fragment {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "beto");
+        File mediaStorageDir = new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "");
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
@@ -212,7 +208,14 @@ public class CameraFragment extends Fragment {
         int x = image.getWidth();
 
         // Map used to count the appearances of each main color of an image
-        HashMap <String, Integer> frequencies = new HashMap<>();
+        HashMap <String, Integer> frequencies = new HashMap<String, Integer>() {{
+            put("FF0000", 0);
+            put("634598", 0);
+            put("2196F3", 0);
+            put("4CAF50", 0);
+            put("FFEB3B", 0);
+            put("FF9800", 0);
+        }};
 
         // Nested for to iterate over every pixel
         for (int j=0; j < y; j++){
@@ -224,10 +227,24 @@ public class CameraFragment extends Fragment {
                 int green = Color.green(colour);
                 int blue = Color.blue(colour);
 
-                String color = euclideanDistance(red, green, blue);
-                // TODO: Use color as key for the frequencies map and increase value by one
+                // Determine the color's closest base
+                String base = euclideanDistance(red, green, blue);
+                // Get the current value of the count for this base
+                int currentCount = frequencies.get(base);
+                // Increment count by 1
+                frequencies.put(base, currentCount + 1);
             }
         }
+        // Get the max count of the HashMap
+        Map.Entry<String, Integer> maxCount = null;
+        for (Map.Entry<String, Integer> entry : frequencies.entrySet())
+        {
+            if (maxCount == null || maxCount.getValue() < entry.getValue())
+            {
+                maxCount = entry;
+            }
+        }
+        Log.d(TAG, "Color count: " + frequencies.toString() + " Most present color: " + maxCount.toString());
         return frequencies;
     }
 
@@ -238,15 +255,29 @@ public class CameraFragment extends Fragment {
     private String euclideanDistance(int red, int green, int blue) {
         HashMap<String, Integer> distances = new HashMap<>();
         for (String key: map.keySet()){
+            // Array of 3 ints to store the RGB values of the key string
             int[] base = new int[3];
+            // For loop to get all 3 colors
             for (int i = 0; i < 3; i++) {
                 base[i] = Integer.parseInt(key.substring(i * 2, i * 2 + 2), 16);
             }
-            int distance = (int) Math.sqrt(Math.pow(base[0] - red, 2) + Math.pow(base[1] - green, 2) + Math.pow(base[2] - blue, 2));
+            // Euclidean distance in 3D space
+            int distance = (int) Math.sqrt( Math.pow(base[0] - red, 2) + Math.pow(base[1] - green, 2) + Math.pow(base[2] - blue, 2) );
+            // Add distance to HashMap
             distances.put(key, distance);
         }
-        Log.d("beto", "euclideanDistance: " + distances.toString());
-        // TODO: Return key with max value
-        return "";
+
+        // Get minimal distance between the color and all the bases
+        Map.Entry<String, Integer> minDistance = null;
+
+        for (Map.Entry<String, Integer> entry : distances.entrySet())
+        {
+            if (minDistance == null || minDistance.getValue() > entry.getValue())
+            {
+                minDistance = entry;
+            }
+        }
+        // Return the base with the closest distance
+        return minDistance.getKey();
     }
 }
