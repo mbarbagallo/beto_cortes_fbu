@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.UserProfileFragment">
+
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Logout"
+        android:layout_below="@+id/btnResetColorForm"
+        android:layout_marginTop="20dp"
+    />
+
+    <Button
+        android:id="@+id/btnResetColorForm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Color form activity"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+    />
+
+</RelativeLayout>
