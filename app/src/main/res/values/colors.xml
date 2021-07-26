@@ -8,4 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#EC4741</color>
+
+    <color name="option1">#555555</color>
+    <color name="option2">#5555AA</color>
+    <color name="option3">#55AA55</color>
+    <color name="option4">#55AAAA</color>
+    <color name="option5">#AA5555</color>
+    <color name="option6">#AA55AA</color>
+    <color name="option7">#AAAA55</color>
+    <color name="option8">#AAAAAA</color>
 </resources>

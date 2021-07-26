@@ -39,7 +39,7 @@
         android:text="@string/color_form_instructions" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardRedDropdown"
+        android:id="@+id/cardSpinner1"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_below="@+id/tvFormInstructions"
@@ -51,7 +51,7 @@
         >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/redSpinner"
+            android:id="@+id/colorSpinner1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end"
@@ -64,17 +64,17 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#ec4741"
+            app:tint="@color/option1"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardVioletDropdown"
+        android:id="@+id/cardSpinner2"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/cardRedDropdown"
+        android:layout_below="@+id/cardSpinner1"
         android:layout_alignParentStart="true"
         android:layout_marginStart="30dp"
         android:layout_alignEnd="@+id/btnConfirmColors"
@@ -82,7 +82,7 @@
         android:layout_marginTop="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/violetSpinner"
+            android:id="@+id/colorSpinner2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overlapAnchor="false"
@@ -94,7 +94,7 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#634598"
+            app:tint="@color/option2"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
@@ -103,10 +103,10 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardBlueDropdown"
+        android:id="@+id/cardSpinner3"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/cardVioletDropdown"
+        android:layout_below="@+id/cardSpinner2"
         android:layout_alignParentStart="true"
         android:layout_marginStart="30dp"
         android:layout_alignEnd="@+id/btnConfirmColors"
@@ -114,7 +114,7 @@
         android:layout_marginTop="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/blueSpinner"
+            android:id="@+id/colorSpinner3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dropDownWidth="143dp"
@@ -126,17 +126,17 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#2196F3"
+            app:tint="@color/option3"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardBlackDropdown"
+        android:id="@+id/cardSpinner4"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/cardBlueDropdown"
+        android:layout_below="@+id/cardSpinner3"
         android:layout_alignParentStart="true"
         android:layout_marginStart="30dp"
         android:layout_alignEnd="@+id/btnConfirmColors"
@@ -144,7 +144,7 @@
         android:layout_marginTop="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/blackSpinner"
+            android:id="@+id/colorSpinner4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dropDownWidth="143dp"
@@ -156,14 +156,14 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#000000"
+            app:tint="@color/option4"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardGreenDropdown"
+        android:id="@+id/cardSpinner5"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_below="@+id/tvFormInstructions"
@@ -174,7 +174,7 @@
         android:layout_marginEnd="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/greenSpinner"
+            android:id="@+id/colorSpinner5"
             android:layout_width="match_parent"
             android:dropDownWidth="143dp"
             android:layout_height="match_parent"
@@ -186,17 +186,17 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#4CAF50"
+            app:tint="@color/option5"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardYellowDropdown"
+        android:id="@+id/cardSpinner6"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/cardGreenDropdown"
+        android:layout_below="@+id/cardSpinner5"
         android:layout_alignStart="@+id/btnConfirmColors"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="90dp"
@@ -204,7 +204,7 @@
         android:layout_marginEnd="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/yellowSpinner"
+            android:id="@+id/colorSpinner6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overlapAnchor="false"
@@ -216,17 +216,17 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#FFEB3B"
+            app:tint="@color/option6"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardOrangeDropdown"
+        android:id="@+id/cardSpinner7"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/cardYellowDropdown"
+        android:layout_below="@+id/cardSpinner6"
         android:layout_alignStart="@+id/btnConfirmColors"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="90dp"
@@ -234,7 +234,7 @@
         android:layout_marginEnd="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/orangeSpinner"
+            android:id="@+id/colorSpinner7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overlapAnchor="false"
@@ -246,7 +246,7 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#B17419"
+            app:tint="@color/option7"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 
@@ -254,10 +254,10 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardWhiteDropdown"
+        android:id="@+id/cardSpinner8"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/cardOrangeDropdown"
+        android:layout_below="@+id/cardSpinner7"
         android:layout_alignStart="@+id/btnConfirmColors"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="90dp"
@@ -265,7 +265,7 @@
         android:layout_marginEnd="30dp" >
 
         <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/graySpinner"
+            android:id="@+id/colorSpinner8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overlapAnchor="false"
@@ -277,7 +277,7 @@
             android:layout_height="35dp"
             android:layout_margin="5dp"
             android:layout_gravity="end"
-            app:tint="#b3b2b7"
+            app:tint="@color/option8"
             android:src="@drawable/ic_baseline_arrow_drop_down_circle_24"
             />
 

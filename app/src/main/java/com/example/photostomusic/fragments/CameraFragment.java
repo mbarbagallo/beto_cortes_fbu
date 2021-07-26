@@ -155,16 +155,28 @@ public class CameraFragment extends Fragment {
         int y = image.getHeight();
         int x = image.getWidth();
 
+        // Get the name of hex of each color resource as a string to fill the map
+        // The colors are recovered as an int, then logical AND operation to remove
+        // the transparency of the color, convert this to a HEX string
+        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & 0x00ffffff);
+        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & 0x00ffffff);
+        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & 0x00ffffff);
+        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & 0x00ffffff);
+        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & 0x00ffffff);
+        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & 0x00ffffff);
+        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & 0x00ffffff);
+        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & 0x00ffffff);
+
         // Map used to count the appearances of each main color of an image
         HashMap <String, Integer> frequencies = new HashMap<String, Integer>() {{
-            put("EC4741", 0);
-            put("634598", 0);
-            put("2196F3", 0);
-            put("4CAF50", 0);
-            put("FFEB3B", 0);
-            put("B17419", 0);
-            put("B3B2B7", 0);
-            put("000000", 0);
+            put(color1, 0);
+            put(color2, 0);
+            put(color3, 0);
+            put(color4, 0);
+            put(color5, 0);
+            put(color6, 0);
+            put(color7, 0);
+            put(color8, 0);
         }};
 
         // Nested for to iterate over every pixel
