@@ -2,19 +2,13 @@ package com.example.photostomusic.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,13 +21,13 @@ import android.widget.Toast;
 import com.example.photostomusic.R;
 import com.parse.ParseUser;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-
-import models.Song;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,7 +48,8 @@ public class CameraFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    HashMap<String, String> map;
+    HashMap<String, String> colorRelation;
+    HashMap<String, String> emotionRelation;
     ParseUser user;
 
     // Visual elements of the fragment
@@ -105,8 +100,8 @@ public class CameraFragment extends Fragment {
 
         btnPictureCapture = view.findViewById(R.id.btnImageCapture);
         user = ParseUser.getCurrentUser();
-        map = (HashMap<String, String>) user.get("ColorRelation");
-        Log.d(TAG, map.toString());
+        colorRelation = (HashMap<String, String>) user.get("ColorRelation");
+        Log.d(TAG, colorRelation.toString());
 
         btnPictureCapture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +109,27 @@ public class CameraFragment extends Fragment {
                 launchCamera();
             }
         });
+
+
+        // Hashmap used to relate emotions to music genres
+        // Emotions and music relation based on the paper:
+        // https://www.pnas.org/content/117/4/1924#sec-3
+        // Its results can be easily seen on this interactive
+        // cluster: https://www.ocf.berkeley.edu/~acowen/music.html#
+        emotionRelation = new HashMap<String, String>() {{
+            put("Calm", "acoustic");
+            put("Dreamy", "gospel");
+            put("Heroic", "classical");
+            put("Anxious", "industrial");
+            put("Scared", "sad");
+            put("Annoyed", "punk");
+            put("Defiant", "metal");
+            put("Energized", "edm");
+            put("Amazed", "funk");
+            put("Joyful", "disco");
+            put("Desirous", "reggaeton");
+            put("Cute", "romance");
+        }};
 
     }
 
@@ -139,10 +155,7 @@ public class CameraFragment extends Fragment {
                 // Load the taken image into a preview
                 ImageView ivPreview = getActivity().findViewById(R.id.ivPreview);
                 ivPreview.setImageBitmap(photo);
-                // Hashmap of color frequencies
-                // TODO: Send this method call to loading screen
-                // TODO: Sort frequencies map by values and get first 3 values
-                HashMap<String, Integer> colors = getRGBs(photo);
+                HashMap<String, String> genres = getMusicGenres(photo);
 
         } else { // Result was a failure
             Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
@@ -150,7 +163,7 @@ public class CameraFragment extends Fragment {
     }
 
 
-    public HashMap<String, Integer> getRGBs(Bitmap image){
+    public HashMap<String, String> getMusicGenres(Bitmap image){
         // Get image sizes to iterate over each pixel
         int y = image.getHeight();
         int x = image.getWidth();
@@ -197,18 +210,50 @@ public class CameraFragment extends Fragment {
                 frequencies.put(base, currentCount + 1);
             }
         }
-        // Get the max count of the HashMap
-        Map.Entry<String, Integer> maxCount = null;
-        for (Map.Entry<String, Integer> entry : frequencies.entrySet())
-        {
-            if (maxCount == null || maxCount.getValue() < entry.getValue())
-            {
-                maxCount = entry;
+        // Sort color frequency hashmap by value
+        HashMap<String, Integer> orderedFrequencies = sortByComparator(frequencies);
+        // Empty hashmap to store the top 3 colors
+        HashMap<String, String> genres = new HashMap<>();
+
+        int top = 0;
+        // Loop to get the top 3 colors
+        for (Map.Entry<String, Integer> entry : orderedFrequencies.entrySet()){
+            if (top < 3){
+                String emotion = colorRelation.get(entry.getKey());
+                genres.put(entry.getKey(), emotionRelation.get(emotion));
+                top++;
+            } else {
+                break;
             }
         }
-        Log.d(TAG, "Color count: " + frequencies.toString() + " Most present color: " + maxCount.toString());
-        return frequencies;
+        Log.d(TAG, "Colors: " + genres.toString());
+        return genres;
     }
+
+    // Method to sort a the color count hashmap by its values on descending order
+    private static HashMap<String, Integer> sortByComparator(Map<String, Integer> unsortedMap)
+    {
+        // Use a LinkedList to keep a track of the order of the entries
+        List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortedMap.entrySet());
+
+        // Sorting the list on descending order with a custom comparator
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2) {
+                // Compare next to previous to get descending order
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+
+        // Insert elements in order with the linked list
+        HashMap<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+        for (Map.Entry<String, Integer> entry : list) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
+
 
     // Method to get the closest base color of the app to a color point passed
     // The idea is to handle color as a 3D vector space, with euclidean distance
@@ -216,7 +261,7 @@ public class CameraFragment extends Fragment {
     // as points on said space.
     private String euclideanDistance(int red, int green, int blue) {
         HashMap<String, Integer> distances = new HashMap<>();
-        for (String key: map.keySet()){
+        for (String key: colorRelation.keySet()){
             // Array of 3 ints to store the RGB values of the key string
             int[] base = new int[3];
             // For loop to get all 3 colors

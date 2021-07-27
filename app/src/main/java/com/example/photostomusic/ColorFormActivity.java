@@ -39,10 +39,23 @@ public class ColorFormActivity extends AppCompatActivity {
     AppCompatSpinner spinner7;
     AppCompatSpinner spinner8;
 
-    // Temp list used to test dropdowns
+    // Emotions present on the tellegen-watson-clark mood model
+    // https://www.researchgate.net/publication/318510880_Applying_Data_Mining_for_Sentiment_Analysis_in_Music
     List<String> emotions = new ArrayList<String>(Arrays.asList(
-            "default", "Happy", "Tranquil", "Scared", "Amazed",
-            "Sad", "Tired", "Angry", "Alert"));
+            "default",
+            "Calm",
+            "Dreamy",
+            "Heroic",
+            "Anxious",
+            "Scared",
+            "Annoyed",
+            "Defiant",
+            "Energized",
+            "Amazed",
+            "Joyful",
+            "Desirous",
+            "Cute"
+    ));
 
     // List used to contain all currently selected options
     Set<String> usedOptions = new HashSet<String>();
