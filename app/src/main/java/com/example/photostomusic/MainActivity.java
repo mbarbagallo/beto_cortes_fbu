@@ -53,11 +53,14 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
+                Fragment fragment = null;
                 switch (item.getItemId()){
                     case R.id.action_camera:
                         //Toast.makeText(MainActivity.this, "Camera", Toast.LENGTH_SHORT).show();
                         fragment = new CameraFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("key", spotifyToken);
+                        fragment.setArguments(bundle);
                         break;
                     case R.id.action_history:
                         //Toast.makeText(MainActivity.this, "History", Toast.LENGTH_SHORT).show();
@@ -68,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new UserProfileFragment();
                         break;
                     default:
-                        fragment = new CameraFragment();
                         break;
                 }
                 fragmentManager.beginTransaction()

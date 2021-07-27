@@ -41,6 +41,7 @@ public class CameraFragment extends Fragment {
     HashMap<String, String> colorRelation;
     HashMap<String, String> emotionRelation;
     ParseUser user;
+    String spotifyToken;
 
     // Visual elements of the fragment
     Button btnPictureCapture;
@@ -76,6 +77,10 @@ public class CameraFragment extends Fragment {
                 launchCamera();
             }
         });
+
+        Bundle bundle = this.getArguments();
+        spotifyToken = bundle.getString("key");
+
 
 
         // Hashmap used to relate emotions to music genres
@@ -131,6 +136,7 @@ public class CameraFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("genres", Parcels.wrap(genres));
                 bundle.putParcelable("photo", Parcels.wrap(photo));
+                bundle.putString("key", spotifyToken);
                 fragment.setArguments(bundle);
                 getActivity().getSupportFragmentManager()
                         .beginTransaction()
