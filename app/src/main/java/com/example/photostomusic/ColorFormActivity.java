@@ -2,20 +2,16 @@ package com.example.photostomusic;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONObject;
@@ -34,17 +30,32 @@ public class ColorFormActivity extends AppCompatActivity {
 
     // Visual elements of the activity
     Button btnConfirmColors;
-    AppCompatSpinner redSpinner;
-    AppCompatSpinner violetSpinner;
-    AppCompatSpinner blueSpinner;
-    AppCompatSpinner greenSpinner;
-    AppCompatSpinner yellowSpinner;
-    AppCompatSpinner orangeSpinner;
+    AppCompatSpinner spinner1;
+    AppCompatSpinner spinner2;
+    AppCompatSpinner spinner3;
+    AppCompatSpinner spinner4;
+    AppCompatSpinner spinner5;
+    AppCompatSpinner spinner6;
+    AppCompatSpinner spinner7;
+    AppCompatSpinner spinner8;
 
-    // Temp list used to test dropdowns
+    // Emotions present on the tellegen-watson-clark mood model
+    // https://www.researchgate.net/publication/318510880_Applying_Data_Mining_for_Sentiment_Analysis_in_Music
     List<String> emotions = new ArrayList<String>(Arrays.asList(
-            "default", "Happy", "Tranquil", "Scared", "Amazed",
-            "Sad", "Tired", "Angry", "Alert"));
+            "default",
+            "Calm",
+            "Dreamy",
+            "Heroic",
+            "Anxious",
+            "Scared",
+            "Annoyed",
+            "Defiant",
+            "Energized",
+            "Amazed",
+            "Joyful",
+            "Desirous",
+            "Cute"
+    ));
 
     // List used to contain all currently selected options
     Set<String> usedOptions = new HashSet<String>();
@@ -61,24 +72,42 @@ public class ColorFormActivity extends AppCompatActivity {
 
         // Connect visual and logic elements
         btnConfirmColors = findViewById(R.id.btnConfirmColors);
-        redSpinner = findViewById(R.id.redSpinner);
-        violetSpinner = findViewById(R.id.violetSpinner);
-        blueSpinner = findViewById(R.id.blueSpinner);
-        greenSpinner = findViewById(R.id.greenSpinner);
-        yellowSpinner = findViewById(R.id.yellowSpinner);
-        orangeSpinner = findViewById(R.id.orangeSpinner);
+        spinner1 = findViewById(R.id.colorSpinner1);
+        spinner2 = findViewById(R.id.colorSpinner2);
+        spinner3 = findViewById(R.id.colorSpinner3);
+        spinner4 = findViewById(R.id.colorSpinner5);
+        spinner5 = findViewById(R.id.colorSpinner6);
+        spinner6 = findViewById(R.id.colorSpinner7);
+        spinner7 = findViewById(R.id.colorSpinner8);
+        spinner8 = findViewById(R.id.colorSpinner4);
+
+        // Get the name of hex of each color resource as a string to fill the map
+        // The colors are recovered as an int, then logical AND operation to remove
+        // the transparency of the color, convert this to a HEX string
+        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & 0x00ffffff);
+        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & 0x00ffffff);
+        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & 0x00ffffff);
+        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & 0x00ffffff);
+        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & 0x00ffffff);
+        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & 0x00ffffff);
+        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & 0x00ffffff);
+        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & 0x00ffffff);
+
 
         // Add listener to confirm button, set a RESULT_OK code for the activity if the form is valid
         btnConfirmColors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, String> map = new HashMap<String, String>() {{
-                    put("FF0000", redSpinner.getSelectedItem().toString());
-                    put("634598", violetSpinner.getSelectedItem().toString());
-                    put("2196F3", blueSpinner.getSelectedItem().toString());
-                    put("4CAF50", greenSpinner.getSelectedItem().toString());
-                    put("FFEB3B", yellowSpinner.getSelectedItem().toString());
-                    put("FF9800", orangeSpinner.getSelectedItem().toString());
+                    //getResources().getString(R.color.someColor);
+                    put(color1, spinner1.getSelectedItem().toString());
+                    put(color2, spinner2.getSelectedItem().toString());
+                    put(color3, spinner3.getSelectedItem().toString());
+                    put(color4, spinner4.getSelectedItem().toString());
+                    put(color5, spinner5.getSelectedItem().toString());
+                    put(color6, spinner6.getSelectedItem().toString());
+                    put(color7, spinner7.getSelectedItem().toString());
+                    put(color8, spinner8.getSelectedItem().toString());
                 }};
                 if (map.containsValue("default")){
                     Toast.makeText(ColorFormActivity.this, "Please don't leave any selector as 'default'.", Toast.LENGTH_SHORT).show();
@@ -89,7 +118,7 @@ public class ColorFormActivity extends AppCompatActivity {
                 // Retrieve the user
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 if (currentUser != null) {
-                    currentUser.put("ColorRelations", toUpload);
+                    currentUser.put("ColorRelation", toUpload);
 
                     // Saves the object.
                     currentUser.saveInBackground(e -> {
@@ -127,13 +156,18 @@ public class ColorFormActivity extends AppCompatActivity {
 
             // Function to check if option has been selected on any other spinner
             private boolean checkIfUsed(String item) {
+                if (item.equals("default")){
+                    return false;
+                }
                 // Currently checking only 2 test spinners
-                usedOptions.add(redSpinner.getSelectedItem().toString());
-                usedOptions.add(violetSpinner.getSelectedItem().toString());
-                usedOptions.add(blueSpinner.getSelectedItem().toString());
-                usedOptions.add(greenSpinner.getSelectedItem().toString());
-                usedOptions.add(yellowSpinner.getSelectedItem().toString());
-                usedOptions.add(orangeSpinner.getSelectedItem().toString());
+                usedOptions.add(spinner1.getSelectedItem().toString());
+                usedOptions.add(spinner2.getSelectedItem().toString());
+                usedOptions.add(spinner3.getSelectedItem().toString());
+                usedOptions.add(spinner4.getSelectedItem().toString());
+                usedOptions.add(spinner5.getSelectedItem().toString());
+                usedOptions.add(spinner6.getSelectedItem().toString());
+                usedOptions.add(spinner7.getSelectedItem().toString());
+                usedOptions.add(spinner8.getSelectedItem().toString());
 
                 if (!usedOptions.contains(item)){
                     // Option is not being used, clear set for next usage of function
@@ -142,6 +176,7 @@ public class ColorFormActivity extends AppCompatActivity {
                     return true;
                 } else {
                     // Option is being used, reject selection and clear set for next usage
+                    Toast.makeText(ColorFormActivity.this, "Option " + item + " is already in use", Toast.LENGTH_SHORT).show();
                     usedOptions.clear();
                     return false;
                 }
@@ -157,30 +192,37 @@ public class ColorFormActivity extends AppCompatActivity {
         genericAdapter.setDropDownViewResource(R.layout.layout_spinner_item);
 
         // Set the generic adapter to all the spinners
-        redSpinner.setAdapter(genericAdapter);
-        redSpinner.setSelection(0);
+        spinner1.setAdapter(genericAdapter);
+        spinner1.setSelection(0);
 
-        violetSpinner.setAdapter(genericAdapter);
-        violetSpinner.setSelection(0);
+        spinner2.setAdapter(genericAdapter);
+        spinner2.setSelection(0);
 
-        blueSpinner.setAdapter(genericAdapter);
-        blueSpinner.setSelection(0);
+        spinner3.setAdapter(genericAdapter);
+        spinner3.setSelection(0);
 
-        greenSpinner.setAdapter(genericAdapter);
-        greenSpinner.setSelection(0);
+        spinner4.setAdapter(genericAdapter);
+        spinner4.setSelection(0);
 
-        yellowSpinner.setAdapter(genericAdapter);
-        yellowSpinner.setSelection(0);
+        spinner5.setAdapter(genericAdapter);
+        spinner5.setSelection(0);
 
-        orangeSpinner.setAdapter(genericAdapter);
-        orangeSpinner.setSelection(0);
+        spinner6.setAdapter(genericAdapter);
+        spinner6.setSelection(0);
+
+        spinner7.setAdapter(genericAdapter);
+        spinner7.setSelection(0);
+
+        spinner8.setAdapter(genericAdapter);
+        spinner8.setSelection(0);
 
         // Set the generic listener as the listener for both of the test spinners
-        redSpinner.setOnItemSelectedListener(genericListener);
-        violetSpinner.setOnItemSelectedListener(genericListener);
-        blueSpinner.setOnItemSelectedListener(genericListener);
-        greenSpinner.setOnItemSelectedListener(genericListener);
-        yellowSpinner.setOnItemSelectedListener(genericListener);
-        orangeSpinner.setOnItemSelectedListener(genericListener);
+        spinner1.setOnItemSelectedListener(genericListener);
+        spinner2.setOnItemSelectedListener(genericListener);
+        spinner3.setOnItemSelectedListener(genericListener);
+        spinner4.setOnItemSelectedListener(genericListener);
+        spinner5.setOnItemSelectedListener(genericListener);
+        spinner6.setOnItemSelectedListener(genericListener);
+        spinner7.setOnItemSelectedListener(genericListener);
     }
 }
