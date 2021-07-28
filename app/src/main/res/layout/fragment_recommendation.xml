@@ -9,10 +9,80 @@
 
     <ImageView
         android:id="@+id/ivSongPhoto"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="175dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivSongCover"
+        android:layout_width="250dp"
+        android:layout_height="175dp"
+        android:layout_below="@+id/ivSongPhoto"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvSongName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivSongCover"
+        android:layout_alignStart="@+id/ivSongCover"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="30dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        tools:text="Song name" />
+
+    <TextView
+        android:id="@+id/tvSongArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSongName"
+        android:layout_alignStart="@+id/ivSongCover"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        tools:text="Artist Name" />
+
+    <TextView
+        android:id="@+id/tvSongAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSongArtist"
+        android:layout_alignStart="@+id/ivSongCover"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
+        tools:text="Album Name" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ivSongPhoto"
+        android:layout_alignStart="@+id/ivSongPhoto"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="-55dp"
+        android:text="Your photo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ivSongCover"
+        android:layout_alignStart="@+id/ivSongCover"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="-55dp"
+        android:text="The song"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textStyle="bold" />
+
 </RelativeLayout>
