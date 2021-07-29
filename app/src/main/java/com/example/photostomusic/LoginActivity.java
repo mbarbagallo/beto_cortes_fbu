@@ -23,8 +23,9 @@ public class LoginActivity extends AppCompatActivity {
     public final String TAG = this.getClass().getSimpleName();
 
     // PSF variables required to interact with the Spotify Auth API
+    // TODO: Hide keys and IDs on properties file
     private static final String CLIENT_ID = "59a64c83ef024ea786df03a966505f91";
-    private static final int REQUEST_CODE = 1337;
+    private static final int REQUEST_CODE = 1415926535;
     private static final String REDIRECT_URI = "intent://";
 
     // Visual components present on the activity
@@ -35,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSpotifyLogin;
 
     // String used to store the Spotify Auth Token
-    String spotifyToken;
+    String spotifyToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +92,10 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Missing spotify login", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    Toast.makeText(LoginActivity.this, "LOGGED IN", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("token", spotifyToken);
                     startActivity(i);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
                 }
             }
@@ -108,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
 
             switch (response.getType()) {

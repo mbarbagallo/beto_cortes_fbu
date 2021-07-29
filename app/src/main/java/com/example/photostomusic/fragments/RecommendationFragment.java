@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.photostomusic.CardStackAdapter;
 import com.example.photostomusic.R;
+import com.wenchao.cardstack.CardStack;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +26,7 @@ import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,14 +47,12 @@ public class RecommendationFragment extends Fragment {
     String spotifyToken;
     JSONObject recommendations;
     JSONArray songs;
-    TextView tvSongName;
-    TextView tvSongArtist;
-    TextView tvSongAlbum;
-    ImageView ivSongCover;
+    String songImage;
     String songName;
     String songArtist;
     String songAlbum;
-    String songImage;
+    CardStack mCardStack;
+    CardStackAdapter mCardAdapter;
 
     public RecommendationFragment() {
         // Required empty public constructor
@@ -71,10 +72,13 @@ public class RecommendationFragment extends Fragment {
 
         // Visual elements of the fragment
         ivSongPhoto = getActivity().findViewById(R.id.ivSongPhoto);
-        tvSongAlbum = getActivity().findViewById(R.id.tvSongAlbum);
-        tvSongArtist = getActivity().findViewById(R.id.tvSongArtist);
-        tvSongName = getActivity().findViewById(R.id.tvSongName);
-        ivSongCover = getActivity().findViewById(R.id.ivSongCover);
+
+        mCardStack = getActivity().findViewById(R.id.cardStackContainer);
+        mCardStack.setContentResource(R.layout.card_layout);
+
+        mCardAdapter = new CardStackAdapter(getActivity().getBaseContext(),0);
+
+
 
         // Retrieve data (image and genres) from the camera fragment
         Bundle bundle = this.getArguments();
@@ -106,22 +110,28 @@ public class RecommendationFragment extends Fragment {
 
                     // Get data for the first song (TEST ONLY)
                     // TODO: Switch song if users swipe-rejects current song
-                    JSONObject song = (JSONObject) songs.get(0);
-                    JSONObject artistData = song.getJSONArray("artists").getJSONObject(0);
-                    JSONObject albumData = song.getJSONObject("album");
+                    for (int i = 0; i < songs.length(); i++){
+                        JSONObject song = songs.getJSONObject(i);
+                        JSONObject artistData = song.getJSONArray("artists").getJSONObject(0);
+                        JSONObject albumData = song.getJSONObject("album");
 
-                    // Store the data of the song on variables
-                    songImage = albumData.getJSONArray("images").getJSONObject(0).getString("url");
-                    songName = song.getString("name");
-                    songArtist = artistData.getString("name");
-                    songAlbum = albumData.getString("name");
+                        // Store the data of the song on variables
+                        songImage = albumData.getJSONArray("images").getJSONObject(0).getString("url");
+                        songName = song.getString("name");
+                        songArtist = artistData.getString("name");
+                        songAlbum = albumData.getString("name");
+
+                        List<String> songData = new ArrayList<>(Arrays.asList(songImage, songName, songArtist, songAlbum));
+                        mCardAdapter.add(songData);
+                    }
+                    //mCardStack.setAdapter(mCardAdapter);
 
                     // Call the method to update the View elements.
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             // Stuff that updates the UI
-                            updateUI(songName, songAlbum, songArtist, songImage);
+                            mCardStack.setAdapter(mCardAdapter);
                         }
                     });
 
@@ -135,14 +145,14 @@ public class RecommendationFragment extends Fragment {
     }
 
     // Method used to update the View elements.
-    private void updateUI(String songName, String songAlbum, String songArtist, String songImage) {
+    /*private void updateUI(String songName, String songAlbum, String songArtist, String songImage) {
         tvSongName.setText(songName);
         tvSongArtist.setText(songArtist);
         tvSongAlbum.setText(songAlbum);
         Glide.with(getActivity().getBaseContext())
                 .load(songImage)
                 .into(ivSongCover);
-    }
+    }*/
 
     // Method to format the endpoint for the Spotify request.
     private String getUrl(List<String> genres){
