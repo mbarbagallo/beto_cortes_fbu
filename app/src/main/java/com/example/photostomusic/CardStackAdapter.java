@@ -13,22 +13,23 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+// Class used to adapt data from the passed JSONObjects to the cards.
 public class CardStackAdapter extends ArrayAdapter {
 
+    // Visual elements of each card
     TextView tvSongName;
     TextView tvSongArtist;
     TextView tvSongAlbum;
     ImageView ivSongCover;
 
+    // Constructor of the class
     public CardStackAdapter(@NonNull Context context, int resource) {
         super(context, resource);
     }
 
     @Override
+    // Connect visual and logic elements, fill each card with its corresponding data
     public View getView(int position, final View contentView, ViewGroup parent){
-        //supply the layout for your card
-        //TextView v = contentView.findViewById(R.id.content);
-        //v.setText(getItem(position));
         List<String> songData = (List<String>) getItem(position);
         tvSongName = contentView.findViewById(R.id.tvSongName);
         tvSongAlbum = contentView.findViewById(R.id.tvSongAlbum);
@@ -42,9 +43,6 @@ public class CardStackAdapter extends ArrayAdapter {
         tvSongName.setText(songData.get(1));
         tvSongArtist.setText(songData.get(2));
         tvSongAlbum.setText(songData.get(3));
-
-
-
 
         return contentView;
     }

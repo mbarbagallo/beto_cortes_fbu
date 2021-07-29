@@ -1,8 +1,7 @@
-package com.example.photostomusic;
+package com.example.photostomusic.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.photostomusic.R;
 import com.parse.ParseUser;
 
 import org.json.JSONObject;
@@ -39,6 +39,10 @@ public class ColorFormActivity extends AppCompatActivity {
     AppCompatSpinner spinner7;
     AppCompatSpinner spinner8;
 
+    // HEX number used to remove Alpha values from colors as it will not be used. This as Android
+    // reads color by default as ARGB, only RGB is needed.
+    public static final  int HEX_BASE = 0x00ffffff;
+
     // Emotions present on the tellegen-watson-clark mood model
     // https://www.researchgate.net/publication/318510880_Applying_Data_Mining_for_Sentiment_Analysis_in_Music
     List<String> emotions = new ArrayList<String>(Arrays.asList(
@@ -54,7 +58,7 @@ public class ColorFormActivity extends AppCompatActivity {
             "Amazed",
             "Joyful",
             "Desirous",
-            "Cute"
+            "Soft"
     ));
 
     // List used to contain all currently selected options
@@ -84,14 +88,14 @@ public class ColorFormActivity extends AppCompatActivity {
         // Get the name of hex of each color resource as a string to fill the map
         // The colors are recovered as an int, then logical AND operation to remove
         // the transparency of the color, convert this to a HEX string
-        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & 0x00ffffff);
-        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & 0x00ffffff);
-        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & 0x00ffffff);
-        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & 0x00ffffff);
-        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & 0x00ffffff);
-        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & 0x00ffffff);
-        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & 0x00ffffff);
-        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & 0x00ffffff);
+        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & HEX_BASE);
+        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & HEX_BASE);
+        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & HEX_BASE);
+        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & HEX_BASE);
+        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & HEX_BASE);
+        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & HEX_BASE);
+        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & HEX_BASE);
+        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & HEX_BASE);
 
 
         // Add listener to confirm button, set a RESULT_OK code for the activity if the form is valid

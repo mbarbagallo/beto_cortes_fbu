@@ -68,9 +68,10 @@
         android:paddingTop="240dp"
         app:card_enable_loop="true"
         app:card_enable_rotation="true"
-        app:card_gravity="top"
-        app:card_margin="10dp"
-        app:card_stack_size="4" />
+        app:card_gravity="bottom"
+        app:card_stack_size="2"
+        app:card_margin="50dp"
+        />
 
 
 </RelativeLayout>

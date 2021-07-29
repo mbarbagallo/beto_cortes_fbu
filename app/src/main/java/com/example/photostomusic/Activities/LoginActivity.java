@@ -1,8 +1,9 @@
-package com.example.photostomusic;
+package com.example.photostomusic.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.photostomusic.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;

@@ -1,4 +1,4 @@
-package com.example.photostomusic;
+package com.example.photostomusic.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.photostomusic.R;
 import com.example.photostomusic.fragments.CameraFragment;
 import com.example.photostomusic.fragments.SongHistoryFragment;
 import com.example.photostomusic.fragments.UserProfileFragment;
