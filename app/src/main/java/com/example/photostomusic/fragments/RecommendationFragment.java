@@ -1,6 +1,7 @@
 package com.example.photostomusic.fragments;
 
 import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +32,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import models.Song;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -51,8 +54,11 @@ public class RecommendationFragment extends Fragment {
     String songName;
     String songArtist;
     String songAlbum;
+    String songCode;
     CardStack mCardStack;
     CardStackAdapter mCardAdapter;
+    Button btnRetakePhoto;
+    Button btnFetchSongs;
 
     public RecommendationFragment() {
         // Required empty public constructor
@@ -73,6 +79,8 @@ public class RecommendationFragment extends Fragment {
         // Visual elements of the fragment
         ivSongPhoto = getActivity().findViewById(R.id.ivSongPhoto);
         mCardStack = getActivity().findViewById(R.id.cardStackContainer);
+        btnRetakePhoto = getActivity().findViewById(R.id.btnRetakePhoto);
+        btnFetchSongs = getActivity().findViewById(R.id.btnFetchMoreSongs);
 
         // Set the layout for each card
         mCardStack.setContentResource(R.layout.card_layout);
@@ -91,14 +99,61 @@ public class RecommendationFragment extends Fragment {
         // Set song photo as the captured image
         ivSongPhoto.setImageBitmap(photo);
 
+        // Call the UI thread to load the adapter and bind the data to the swipeable cards
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Stuff that updates the UI
+                fetchRecommendations(genres);
+            }
+        });
+
+        // User ran out of recommendations and wants to take a new picture
+        btnRetakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CameraFragment cameraFragment = new CameraFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("key", spotifyToken);
+                cameraFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .setCustomAnimations(
+                                android.R.anim.fade_in,  // enter
+                                android.R.anim.fade_out // exit
+                        )
+                        .replace(R.id.flContainer, cameraFragment, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+        // User ran out of recommendations, button clicked to get more from the same picture
+        btnFetchSongs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Call the UI thread to load the adapter and bind the data to the swipeable cards
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        fetchRecommendations(genres);
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    // Method to fetch songs from the Spotify API
+    private void fetchRecommendations(HashMap<String , String > genres) {
         // Build a request to the Spotify API to get the recommendations
         List<String> genreList = new ArrayList<>(genres.values());
         String requestUrl = getUrl(genreList);
         final Request request = new Request.Builder()
-            .url(requestUrl)
+                .url(requestUrl)
                 // Add token to the headers with the "Bearer " prefix
-            .addHeader("Authorization", "Bearer " + spotifyToken)
-            .build();
+                .addHeader("Authorization", "Bearer " + spotifyToken)
+                .build();
 
         // Make the request and check the answer
         mOkHttpClient.newCall(request).enqueue(new Callback() {
@@ -128,9 +183,19 @@ public class RecommendationFragment extends Fragment {
                         songName = song.getString("name");
                         songArtist = artistData.getString("name");
                         songAlbum = albumData.getString("name");
+                        songCode = song.getString("id");
 
                         List<String> songData = new ArrayList<>(Arrays.asList(songImage, songName, songArtist, songAlbum));
-                        mCardAdapter.add(songData);
+                        // Add songs through the UI thread so it later modify the visual elements
+                        // of the card stack
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Stuff that updates the UI
+                                mCardAdapter.add(songData);
+                            }
+                        });
+                        //mCardAdapter.add(songData);
                     }
 
                     // Call the UI thread to load the adapter and bind the data to the swipeable cards
@@ -141,6 +206,9 @@ public class RecommendationFragment extends Fragment {
                             mCardStack.setAdapter(mCardAdapter);
                         }
                     });
+
+
+
                     // Add a listener to the card stack
                     mCardStack.setListener(new CardStack.CardEventListener() {
                         @Override
@@ -171,6 +239,25 @@ public class RecommendationFragment extends Fragment {
                             // ----------
                             //  2  |  3
                             Log.d(TAG, "discarded: " + direction);
+                            switch (direction){
+                                case 0:
+                                    // Reject, remove from stack and notify adapter
+                                    Log.d(TAG, "discarded: 0");
+
+                                    break;
+                                case 1:
+                                    // Accept, send to parse and move to history
+                                    Log.d(TAG, "discarded: 1");
+                                    break;
+                                case 2:
+                                    // Reject, remove from stack and notify adapter
+                                    Log.d(TAG, "discarded: 2");
+                                    break;
+                                case 3:
+                                    // Accept, send to parse and move to history
+                                    Log.d(TAG, "discarded: 3");
+                                    break;
+                            }
                         }
 
                         @Override
@@ -184,7 +271,6 @@ public class RecommendationFragment extends Fragment {
                 }
             }
         });
-
 
     }
 

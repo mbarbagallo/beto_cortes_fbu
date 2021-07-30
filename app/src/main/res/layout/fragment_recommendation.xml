@@ -8,6 +8,7 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvExteriorCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -52,6 +53,7 @@
                     android:layout_marginBottom="10dp"
 
                     tools:src="@tools:sample/avatars" />
+
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
@@ -66,11 +68,32 @@
         android:clipToPadding="false"
         android:gravity="center"
         android:paddingTop="240dp"
-        app:card_enable_loop="true"
+        android:translationZ="50dp"
         app:card_enable_rotation="true"
         app:card_gravity="bottom"
-        app:card_stack_size="2"
         app:card_margin="50dp"
+        app:card_stack_size="2">
+
+    </com.wenchao.cardstack.CardStack>
+
+    <Button
+        android:id="@+id/btnRetakePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cvExteriorCard"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:text="Take another\nphoto"
+        android:translationZ="-15dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFetchMoreSongs"
+        android:layout_below="@+id/btnRetakePhoto"
+        android:text="Get more songs"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         />
 
 
