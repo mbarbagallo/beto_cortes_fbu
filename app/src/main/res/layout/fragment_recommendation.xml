@@ -7,82 +7,94 @@
     tools:context=".fragments.RecommendationFragment" >
 
 
-    <ImageView
-        android:id="@+id/ivSongPhoto"
-        android:layout_width="250dp"
-        android:layout_height="175dp"
-        android:layout_alignParentTop="true"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvExteriorCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        tools:src="@tools:sample/avatars" />
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#38a3a5"
+        android:translationZ="-15dp"
+        app:cardCornerRadius="15dp">
 
-    <ImageView
-        android:id="@+id/ivSongCover"
-        android:layout_width="250dp"
-        android:layout_height="175dp"
-        android:layout_below="@+id/ivSongPhoto"
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:backgroundTint="#c7f9cc"
+            app:cardCornerRadius="15dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:id="@+id/tvYourPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="10dp"
+                    android:text="Your photo!"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivSongPhoto"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_below="@+id/tvYourPhoto"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+
+                    tools:src="@tools:sample/avatars" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+
+    <com.wenchao.cardstack.CardStack
+        android:id="@+id/cardStackContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:paddingTop="240dp"
+        android:translationZ="50dp"
+        app:card_enable_rotation="true"
+        app:card_gravity="bottom"
+        app:card_margin="50dp"
+        app:card_stack_size="2">
+
+    </com.wenchao.cardstack.CardStack>
+
+    <Button
+        android:id="@+id/btnRetakePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cvExteriorCard"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        tools:src="@tools:sample/avatars" />
+        android:layout_marginTop="130dp"
+        android:text="Take another\nphoto"
+        android:translationZ="-15dp" />
 
-    <TextView
-        android:id="@+id/tvSongName"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivSongCover"
-        android:layout_alignStart="@+id/ivSongCover"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="30dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold"
-        tools:text="Song name" />
+        android:id="@+id/btnFetchMoreSongs"
+        android:layout_below="@+id/btnRetakePhoto"
+        android:text="Get more songs"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        />
 
-    <TextView
-        android:id="@+id/tvSongArtist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvSongName"
-        android:layout_alignStart="@+id/ivSongCover"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textStyle="bold"
-        tools:text="Artist Name" />
-
-    <TextView
-        android:id="@+id/tvSongAlbum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvSongArtist"
-        android:layout_alignStart="@+id/ivSongCover"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textStyle="bold"
-        tools:text="Album Name" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/ivSongPhoto"
-        android:layout_alignStart="@+id/ivSongPhoto"
-        android:layout_marginStart="0dp"
-        android:layout_marginBottom="-55dp"
-        android:text="Your photo"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/ivSongCover"
-        android:layout_alignStart="@+id/ivSongCover"
-        android:layout_marginStart="0dp"
-        android:layout_marginBottom="-55dp"
-        android:text="The song"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textStyle="bold" />
 
 </RelativeLayout>

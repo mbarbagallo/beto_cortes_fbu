@@ -136,3 +136,4 @@ User
 * Spotify Android SDK: https://developer.spotify.com/documentation/android/
 * Android Developers: https://developer.android.com/docs
 * Back4App: https://www.back4app.com/docs/get-started/welcome
+* CardStack https://androidrepo.com/repo/wenchaojiang-AndroidSwipeableCardStack-android-android-ui-library

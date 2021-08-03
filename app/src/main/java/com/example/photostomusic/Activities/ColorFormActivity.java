@@ -1,17 +1,18 @@
-package com.example.photostomusic;
+package com.example.photostomusic.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.photostomusic.R;
 import com.parse.ParseUser;
 
 import org.json.JSONObject;
@@ -38,6 +39,11 @@ public class ColorFormActivity extends AppCompatActivity {
     AppCompatSpinner spinner6;
     AppCompatSpinner spinner7;
     AppCompatSpinner spinner8;
+    String spotifyToken = "";
+
+    // HEX number used to remove Alpha values from colors as it will not be used. This as Android
+    // reads color by default as ARGB, only RGB is needed.
+    public static final  int HEX_BASE = 0x00ffffff;
 
     // Emotions present on the tellegen-watson-clark mood model
     // https://www.researchgate.net/publication/318510880_Applying_Data_Mining_for_Sentiment_Analysis_in_Music
@@ -54,7 +60,7 @@ public class ColorFormActivity extends AppCompatActivity {
             "Amazed",
             "Joyful",
             "Desirous",
-            "Cute"
+            "Soft"
     ));
 
     // List used to contain all currently selected options
@@ -70,6 +76,8 @@ public class ColorFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_form);
 
+        spotifyToken = getIntent().getStringExtra("token");
+
         // Connect visual and logic elements
         btnConfirmColors = findViewById(R.id.btnConfirmColors);
         spinner1 = findViewById(R.id.colorSpinner1);
@@ -84,14 +92,14 @@ public class ColorFormActivity extends AppCompatActivity {
         // Get the name of hex of each color resource as a string to fill the map
         // The colors are recovered as an int, then logical AND operation to remove
         // the transparency of the color, convert this to a HEX string
-        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & 0x00ffffff);
-        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & 0x00ffffff);
-        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & 0x00ffffff);
-        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & 0x00ffffff);
-        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & 0x00ffffff);
-        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & 0x00ffffff);
-        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & 0x00ffffff);
-        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & 0x00ffffff);
+        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & HEX_BASE);
+        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & HEX_BASE);
+        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & HEX_BASE);
+        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & HEX_BASE);
+        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & HEX_BASE);
+        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & HEX_BASE);
+        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & HEX_BASE);
+        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & HEX_BASE);
 
 
         // Add listener to confirm button, set a RESULT_OK code for the activity if the form is valid
@@ -123,13 +131,22 @@ public class ColorFormActivity extends AppCompatActivity {
                     // Saves the object.
                     currentUser.saveInBackground(e -> {
                         if(e==null){
-                            //Save successful
                             Toast.makeText(ColorFormActivity.this, "Save Successful", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent();
-                            setResult(RESULT_OK, i);
-                            finish();
+                            //Save successful
+                            if (spotifyToken.isEmpty()){
+                                Intent i = new Intent();
+                                setResult(RESULT_OK, i);
+                                finish();
+                            } else {
+                                Intent i = new Intent(ColorFormActivity.this, MainActivity.class);
+                                i.putExtra("token", spotifyToken);
+                                startActivity(i);
+                                finish();
+                            }
+
                         }else{
                             // Something went wrong while saving
+                            Log.e(TAG, "onClick: ", e);
                             Toast.makeText(ColorFormActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -224,5 +241,6 @@ public class ColorFormActivity extends AppCompatActivity {
         spinner5.setOnItemSelectedListener(genericListener);
         spinner6.setOnItemSelectedListener(genericListener);
         spinner7.setOnItemSelectedListener(genericListener);
+        spinner8.setOnItemSelectedListener(genericListener);
     }
 }

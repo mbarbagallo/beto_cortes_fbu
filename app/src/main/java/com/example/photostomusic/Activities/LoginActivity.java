@@ -1,21 +1,28 @@
-package com.example.photostomusic;
+package com.example.photostomusic.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.photostomusic.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,8 +30,9 @@ public class LoginActivity extends AppCompatActivity {
     public final String TAG = this.getClass().getSimpleName();
 
     // PSF variables required to interact with the Spotify Auth API
+    // TODO: Hide keys and IDs on properties file
     private static final String CLIENT_ID = "59a64c83ef024ea786df03a966505f91";
-    private static final int REQUEST_CODE = 1337;
+    private static final int REQUEST_CODE = 1415926535;
     private static final String REDIRECT_URI = "intent://";
 
     // Visual components present on the activity
@@ -35,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSpotifyLogin;
 
     // String used to store the Spotify Auth Token
-    String spotifyToken;
+    String spotifyToken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,34 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(username, password);
             }
         });
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser user = new ParseUser();
+                user.setUsername(etUser.getText().toString());
+                user.setPassword(etPassword.getText().toString());
+
+                // Attempt user signup
+                user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null){
+                            // If signup was successful, go to ColorFormActivity
+                            Intent i = new Intent(LoginActivity.this, ColorFormActivity.class);
+                            i.putExtra("token", spotifyToken);
+                            startActivity(i);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            finish();
+
+                        } else {
+                            // Handle signup exception
+                            Log.e(TAG, "Parse signup error", e);
+                        }
+                    }
+                });
+            }
+        });
+
         // Login to spotify, this will launch a browser from which the user can login
         // Spotify Login is persistent.
         btnSpotifyLogin.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
+                HashMap<String, String> colors = (HashMap<String, String>) user.get("ColorRelation");
                 // If an exception occurs send a log
                 if (e != null){
                     Toast.makeText(LoginActivity.this, "Parse login error", Toast.LENGTH_SHORT).show();
@@ -90,11 +127,17 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (spotifyToken.isEmpty()){
                     Toast.makeText(LoginActivity.this, "Missing spotify login", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
-                    Toast.makeText(LoginActivity.this, "LOGGED IN", Toast.LENGTH_SHORT).show();
+                } else if (!colors.containsKey("0")){
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("token", spotifyToken);
                     startActivity(i);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                } else {
+                    Intent i = new Intent(LoginActivity.this, ColorFormActivity.class);
+                    i.putExtra("token", spotifyToken);
+                    startActivity(i);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
                 }
             }
@@ -108,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
 
             switch (response.getType()) {

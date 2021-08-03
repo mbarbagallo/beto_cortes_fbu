@@ -37,6 +37,9 @@ public class CameraFragment extends Fragment {
 
     public final String TAG = this.getClass().getSimpleName();
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 220700;
+    // HEX number used to remove Alpha values from colors as it will not be used. This as Android
+    // reads color by default as ARGB, only RGB is needed.
+    public static final  int HEX_BASE = 0x00ffffff;
 
     HashMap<String, String> colorRelation;
     HashMap<String, String> emotionRelation;
@@ -69,7 +72,6 @@ public class CameraFragment extends Fragment {
         btnPictureCapture = view.findViewById(R.id.btnImageCapture);
         user = ParseUser.getCurrentUser();
         colorRelation = (HashMap<String, String>) user.get("ColorRelation");
-        Log.d(TAG, colorRelation.toString());
 
         btnPictureCapture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,14 +163,14 @@ public class CameraFragment extends Fragment {
         // Get the name of hex of each color resource as a string to fill the map
         // The colors are recovered as an int, then logical AND operation to remove
         // the transparency of the color, convert this to a HEX string
-        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & 0x00ffffff);
-        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & 0x00ffffff);
-        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & 0x00ffffff);
-        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & 0x00ffffff);
-        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & 0x00ffffff);
-        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & 0x00ffffff);
-        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & 0x00ffffff);
-        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & 0x00ffffff);
+        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & HEX_BASE);
+        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & HEX_BASE);
+        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & HEX_BASE);
+        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & HEX_BASE);
+        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & HEX_BASE);
+        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & HEX_BASE);
+        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & HEX_BASE);
+        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & HEX_BASE);
 
         // Map used to count the appearances of each main color of an image
         HashMap <String, Integer> frequencies = new HashMap<String, Integer>() {{
@@ -216,7 +218,6 @@ public class CameraFragment extends Fragment {
                 break;
             }
         }
-        Log.d(TAG, "Colors: " + genres.toString());
         return genres;
     }
 
@@ -258,14 +259,11 @@ public class CameraFragment extends Fragment {
             for (int i = 0; i < 3; i++) {
                 base[i] = Integer.parseInt(key.substring(i * 2, i * 2 + 2), 16);
             }
-            //Log.d(TAG, Arrays.toString(base) + " " + key);
             // Euclidean distance in 3D space
             int distance = (int) Math.sqrt( Math.pow(base[0] - red, 2) + Math.pow(base[1] - green, 2) + Math.pow(base[2] - blue, 2) );
             // Add distance to HashMap
             distances.put(key, distance);
         }
-        //Log.d(TAG,"RGB: " + red + " " + green + " " + blue);
-
         // Get minimal distance between the color and all the bases
         Map.Entry<String, Integer> minDistance = null;
 
@@ -277,7 +275,6 @@ public class CameraFragment extends Fragment {
             }
         }
         // Return the base with the closest distance
-        //Log.d(TAG, distances.toString());
         return minDistance.getKey();
     }
 }

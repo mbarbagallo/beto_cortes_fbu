@@ -5,12 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SongHistoryFragment">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Go to song detail"
-        android:id="@+id/btnTempSongDetail"
-    />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rvSongs"/>
 
 </RelativeLayout>

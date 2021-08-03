@@ -1,10 +1,39 @@
-package com.example.photostomusic;
+package com.example.photostomusic.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.example.photostomusic.R;
+import com.example.photostomusic.fragments.CameraFragment;
+import com.example.photostomusic.fragments.SongHistoryFragment;
+import com.example.photostomusic.fragments.UserProfileFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.parse.ParseUser;
 
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    // Visual elements of the activity
+    BottomNavigationView bottomNavigationView;
+    public final String TAG = this.getClass().getSimpleName();
+    public static final int COLOR_FORM_REQUEST_CDOE = 220700;
+    // String used to capture the token passed through the Login intent
+    String spotifyToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
