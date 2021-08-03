@@ -1,6 +1,7 @@
 package com.example.photostomusic.fragments;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.os.Bundle;
 
@@ -19,6 +20,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.photostomusic.CardStackAdapter;
 import com.example.photostomusic.R;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.wenchao.cardstack.CardStack;
 
 import org.json.JSONArray;
@@ -26,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -104,7 +110,7 @@ public class RecommendationFragment extends Fragment {
             @Override
             public void run() {
                 // Stuff that updates the UI
-                fetchRecommendations(genres);
+                fetchRecommendations(genres, photo);
             }
         });
 
@@ -135,7 +141,7 @@ public class RecommendationFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        fetchRecommendations(genres);
+                        fetchRecommendations(genres, photo);
                     }
                 });
 
@@ -145,7 +151,7 @@ public class RecommendationFragment extends Fragment {
     }
 
     // Method to fetch songs from the Spotify API
-    private void fetchRecommendations(HashMap<String , String > genres) {
+    private void fetchRecommendations(HashMap<String , String > genres, Bitmap photo) {
         // Build a request to the Spotify API to get the recommendations
         List<String> genreList = new ArrayList<>(genres.values());
         String requestUrl = getUrl(genreList);
@@ -241,21 +247,22 @@ public class RecommendationFragment extends Fragment {
                             Log.d(TAG, "discarded: " + direction);
                             switch (direction){
                                 case 0:
-                                    // Reject, remove from stack and notify adapter
+                                    // Song rejected, it is now removed from stack
                                     Log.d(TAG, "discarded: 0");
-
                                     break;
                                 case 1:
-                                    // Accept, send to parse and move to history
+                                    // Song accepted, sending to Parse
                                     Log.d(TAG, "discarded: 1");
+                                    saveSong(songImage, songName, songArtist, songAlbum, songCode, genres, photo);
                                     break;
                                 case 2:
-                                    // Reject, remove from stack and notify adapter
+                                    // Song rejected, it is now removed from stack
                                     Log.d(TAG, "discarded: 2");
                                     break;
                                 case 3:
                                     // Accept, send to parse and move to history
                                     Log.d(TAG, "discarded: 3");
+                                    saveSong(songImage, songName, songArtist, songAlbum, songCode, genres, photo);
                                     break;
                             }
                         }
@@ -268,6 +275,59 @@ public class RecommendationFragment extends Fragment {
 
                 } catch (JSONException e) {
                     Log.e(TAG, "Failed to parse data", e);
+                }
+            }
+        });
+
+    }
+
+    // Method used to save songs to the DB
+    private void saveSong(String songImage, String songName, String artist, String album, String songCode, HashMap<String, String> genres, Bitmap photo) {
+        // Create new song
+        Song song = new Song();
+
+        // Add all the string values to the song
+        song.setSongName(songName);
+        song.setSongCover(songImage);
+        song.setSongArtist(artist);
+        song.setSongAlbum(album);
+        song.setSongCode(songCode);
+
+        // Extract keys and values of the photo, as colors and genres
+        song.setColors(new ArrayList<String>(genres.keySet()));
+        song.setGenres(new ArrayList<String>(genres.values()));
+
+        // Song belongs to current user
+        song.setUser(ParseUser.getCurrentUser());
+
+        // Convert captured photo to byte array after compressing to PNG,
+        // then the byte array is added as a new Parsefile that will
+        // be uploaded to the DB
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.PNG,100, stream);
+        byte[] byteArray = stream.toByteArray();
+        ParseFile file = new ParseFile("image.png", byteArray);
+        song.setPicture(file);
+
+        // Save song in background so it is now on the DB
+        song.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null){ // Something went wrong
+                    Log.e(TAG, "Parse save error", e);
+                } else {
+                    // Swap fragments to the song history
+                    SongHistoryFragment fragment = new SongHistoryFragment();
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .setCustomAnimations(
+                                    android.R.anim.fade_in,  // enter
+                                    android.R.anim.fade_out // exit
+                            )
+                            .replace(R.id.flContainer, fragment)
+                            .addToBackStack(null)
+                            .commit();
                 }
             }
         });

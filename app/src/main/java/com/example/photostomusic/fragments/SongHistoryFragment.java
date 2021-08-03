@@ -5,20 +5,34 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.photostomusic.LikesAdapter;
 import com.example.photostomusic.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
-public class SongHistoryFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+import models.Song;
+
+public class SongHistoryFragment extends Fragment implements LikesAdapter.SongInteractionListener {
+
+    public final String TAG = this.getClass().getSimpleName();
 
     // Visual elements of the fragment
-    // Currently only holds a temporary button that will be replaced with a Recycler View on
-    // the following weeks
-    Button btnTempSongDetail;
+    RecyclerView rvSongs;
+    LikesAdapter likesAdapter;
+    List<Song> songs;
 
     public SongHistoryFragment() {
         // Required empty public constructor
@@ -40,6 +54,13 @@ public class SongHistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Connect visual and logic parts
+        rvSongs = view.findViewById(R.id.rvSongs);
+        songs = new ArrayList<>();
+        fetchLikes();
+        likesAdapter = new LikesAdapter(this, getContext(), songs);
+        rvSongs.setAdapter(likesAdapter);
+        rvSongs.setLayoutManager(new LinearLayoutManager(getContext()));
+        /*
         btnTempSongDetail = view.findViewById(R.id.btnTempSongDetail);
 
         // Button listener that sends to song detail fragment, will be swapped by a Recycler View
@@ -59,6 +80,29 @@ public class SongHistoryFragment extends Fragment {
                         .addToBackStack(null)
                         .commit();
             }
+        });*/
+    }
+    private void fetchLikes(){
+        ParseQuery<Song> query = ParseQuery.getQuery(Song.class);
+        query.include(Song.KEY_USER);
+        query.addDescendingOrder("createdAt");
+        query.findInBackground(new FindCallback<Song>() {
+            @Override
+            public void done(List<Song> objects, ParseException e) {
+                if (e != null){
+                    Log.e(TAG, "Could not get likes", e);
+                }
+                songs.clear();
+                songs.addAll(objects);
+                likesAdapter.notifyDataSetChanged();
+                Log.d(TAG, songs.toString());
+            }
         });
+    }
+
+    @Override
+    public void onSongClicked(int position) {
+        SongDetailFragment fragment = new SongDetailFragment();
+
     }
 }

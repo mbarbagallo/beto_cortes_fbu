@@ -22,6 +22,7 @@ public class Song extends ParseObject {
     public static final String KEY_NAME = "song_name";
     public static final String KEY_ARTIST = "song_artist";
     public static final String KEY_ALBUM = "song_album";
+    public static final String KEY_COVER = "songCover";
 
     /* Getters to retrieve each attribute for the Parse object, said attributes
     are the following:
@@ -59,6 +60,9 @@ public class Song extends ParseObject {
     public String getSongAlbum(){
         return getString(KEY_ALBUM);
     }
+    public String  getSongCover(){
+        return getString(KEY_COVER);
+    }
 
 
 
@@ -72,10 +76,10 @@ public class Song extends ParseObject {
     public void setSongCode(String code){
         put(KEY_SONG_CODE, code);
     }
-    public void setGenres(JSONArray genres){
+    public void setGenres(List<String> genres){
         put(KEY_GENRES, genres);
     }
-    public void setColors(JSONArray colors){
+    public void setColors(List<String> colors){
         put(KEY_COLORS, colors);
     }
     public void setSongName(String name){
@@ -86,6 +90,9 @@ public class Song extends ParseObject {
     }
     public void setSongAlbum(String album){
         put(KEY_ALBUM, album);
+    }
+    public void setSongCover(String file){
+        put(KEY_COVER, file);
     }
 
 
