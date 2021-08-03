@@ -20,6 +20,8 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,54 +57,61 @@ public class SongHistoryFragment extends Fragment implements LikesAdapter.SongIn
         super.onViewCreated(view, savedInstanceState);
         // Connect visual and logic parts
         rvSongs = view.findViewById(R.id.rvSongs);
+
+        // Define empty list to hold songs
         songs = new ArrayList<>();
+
+        // Fetch songs liked by the user from the DB
         fetchLikes();
+
+        // Instantiate an adapter and set it to the RV
         likesAdapter = new LikesAdapter(this, getContext(), songs);
         rvSongs.setAdapter(likesAdapter);
-        rvSongs.setLayoutManager(new LinearLayoutManager(getContext()));
-        /*
-        btnTempSongDetail = view.findViewById(R.id.btnTempSongDetail);
 
-        // Button listener that sends to song detail fragment, will be swapped by a Recycler View
-        // Interface click handler in coming days.
-        btnTempSongDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Swap current fragment with song detail one, add animation to transition
-                SongDetailFragment nextFrag = new SongDetailFragment();
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(
-                                android.R.anim.fade_in,  // enter
-                                android.R.anim.fade_out // exit
-                        )
-                        .replace(R.id.flContainer, nextFrag, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });*/
+        // Add a simple linear layout manager for the rows
+        rvSongs.setLayoutManager(new LinearLayoutManager(getContext()));
     }
+
+    // Method used to get liked songs from the DB
     private void fetchLikes(){
+        // Create a new query to parse
         ParseQuery<Song> query = ParseQuery.getQuery(Song.class);
+
+        // Only include songs from the current user
         query.include(Song.KEY_USER);
+
+        // Sort by most recent
+        // TODO: Add capture date
         query.addDescendingOrder("createdAt");
+        // Get the songs
         query.findInBackground(new FindCallback<Song>() {
             @Override
             public void done(List<Song> objects, ParseException e) {
                 if (e != null){
                     Log.e(TAG, "Could not get likes", e);
                 }
+                // Empty song array, add all new songs and notify adapter.
                 songs.clear();
                 songs.addAll(objects);
                 likesAdapter.notifyDataSetChanged();
-                Log.d(TAG, songs.toString());
             }
         });
     }
 
+    // If a song card was clicked go to song detail with this song
     @Override
     public void onSongClicked(int position) {
         SongDetailFragment fragment = new SongDetailFragment();
-
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("song", Parcels.wrap(songs.get(position)));
+        fragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(
+                        android.R.anim.fade_in,  // enter
+                        android.R.anim.fade_out // exit
+                )
+                .replace(R.id.flContainer, fragment, "findThisFragment")
+                .commit();
     }
 }
