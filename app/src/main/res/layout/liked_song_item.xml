@@ -9,8 +9,8 @@
 
     <com.google.android.material.card.MaterialCardView
         app:cardCornerRadius="15dp"
-        app:strokeColor="@color/option1"
-        app:strokeWidth="2dp"
+        app:strokeColor="#818181"
+        app:strokeWidth="1dp"
         android:layout_width="match_parent"
         android:id="@+id/cvSongList"
         android:layout_height="100dp">

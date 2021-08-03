@@ -3,6 +3,7 @@ package com.example.photostomusic.fragments;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.photostomusic.CardStackAdapter;
@@ -61,10 +63,12 @@ public class RecommendationFragment extends Fragment {
     String songArtist;
     String songAlbum;
     String songCode;
+    String previewUrl;
     CardStack mCardStack;
     CardStackAdapter mCardAdapter;
     Button btnRetakePhoto;
     Button btnFetchSongs;
+    MediaPlayer mp;
 
     public RecommendationFragment() {
         // Required empty public constructor
@@ -81,6 +85,7 @@ public class RecommendationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
+        mp = new MediaPlayer();
 
         // Visual elements of the fragment
         ivSongPhoto = getActivity().findViewById(R.id.ivSongPhoto);
@@ -190,6 +195,7 @@ public class RecommendationFragment extends Fragment {
                         songArtist = artistData.getString("name");
                         songAlbum = albumData.getString("name");
                         songCode = song.getString("id");
+                        previewUrl = song.getString("preview_url");
 
                         List<String> songData = new ArrayList<>(Arrays.asList(songImage, songName, songArtist, songAlbum));
                         // Add songs through the UI thread so it later modify the visual elements
@@ -249,27 +255,53 @@ public class RecommendationFragment extends Fragment {
                                 case 0:
                                     // Song rejected, it is now removed from stack
                                     Log.d(TAG, "discarded: 0");
+                                    mp.stop();
+                                    mp.reset();
                                     break;
                                 case 1:
                                     // Song accepted, sending to Parse
                                     Log.d(TAG, "discarded: 1");
-                                    saveSong(songImage, songName, songArtist, songAlbum, songCode, genres, photo);
+                                    try {
+                                        saveSong(songs.getJSONObject(mIndex-1), genres, photo);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                     break;
                                 case 2:
                                     // Song rejected, it is now removed from stack
                                     Log.d(TAG, "discarded: 2");
+                                    mp.stop();
+                                    mp.reset();
                                     break;
                                 case 3:
                                     // Accept, send to parse and move to history
                                     Log.d(TAG, "discarded: 3");
-                                    saveSong(songImage, songName, songArtist, songAlbum, songCode, genres, photo);
+                                    try {
+                                        saveSong(songs.getJSONObject(mIndex), genres, photo);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                     break;
                             }
                         }
 
                         @Override
-                        // TODO: (STRETCH) Add preview of song with Spotify API
                         public void topCardTapped() {
+                            mp.stop();
+                            mp.reset();
+                            try {
+                                JSONObject song = songs.getJSONObject(mCardStack.getCurrIndex());
+                                String preview_url = song.getString("preview_url");
+                                mp.setDataSource(preview_url);
+                                mp.prepare();
+                                mp.start();
+                                Toast.makeText(getContext(), "Playing song preview! :)", Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                Toast.makeText(getContext(), "Song has no preview :(", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -282,16 +314,27 @@ public class RecommendationFragment extends Fragment {
     }
 
     // Method used to save songs to the DB
-    private void saveSong(String songImage, String songName, String artist, String album, String songCode, HashMap<String, String> genres, Bitmap photo) {
+    private void saveSong(JSONObject data, HashMap<String, String> genres, Bitmap photo) throws JSONException {
         // Create new song
         Song song = new Song();
+
+        JSONObject artistData = data.getJSONArray("artists").getJSONObject(0);
+        JSONObject albumData = data.getJSONObject("album");
+
+        songImage = albumData.getJSONArray("images").getJSONObject(0).getString("url");
+        songName = data.getString("name");
+        songArtist = artistData.getString("name");
+        songAlbum = albumData.getString("name");
+        songCode = data.getString("id");
+        previewUrl = data.getString("preview_url");
 
         // Add all the string values to the song
         song.setSongName(songName);
         song.setSongCover(songImage);
-        song.setSongArtist(artist);
-        song.setSongAlbum(album);
+        song.setSongArtist(songArtist);
+        song.setSongAlbum(songAlbum);
         song.setSongCode(songCode);
+        song.setPreviewUrl(previewUrl);
 
         // Extract keys and values of the photo, as colors and genres
         song.setColors(new ArrayList<String>(genres.keySet()));
@@ -326,12 +369,12 @@ public class RecommendationFragment extends Fragment {
                                     android.R.anim.fade_out // exit
                             )
                             .replace(R.id.flContainer, fragment)
-                            .addToBackStack(null)
                             .commit();
                 }
             }
         });
-
+        mp.stop();
+        mp.reset();
     }
 
     // Method to format the endpoint for the Spotify request.
