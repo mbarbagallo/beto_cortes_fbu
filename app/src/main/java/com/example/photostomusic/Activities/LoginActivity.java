@@ -21,6 +21,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
 
     // Class name used as TAG for debugging
@@ -116,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
+                HashMap<String, String> colors = (HashMap<String, String>) user.get("ColorRelation");
                 // If an exception occurs send a log
                 if (e != null){
                     Toast.makeText(LoginActivity.this, "Parse login error", Toast.LENGTH_SHORT).show();
@@ -123,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (spotifyToken.isEmpty()){
                     Toast.makeText(LoginActivity.this, "Missing spotify login", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (user.get("colorRelation") != null){
+                } else if (!colors.containsKey("0")){
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("token", spotifyToken);
                     startActivity(i);

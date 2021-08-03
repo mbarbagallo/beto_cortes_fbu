@@ -19,6 +19,7 @@ import com.example.photostomusic.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
@@ -79,6 +80,7 @@ public class SongHistoryFragment extends Fragment implements LikesAdapter.SongIn
 
         // Only include songs from the current user
         query.include(Song.KEY_USER);
+        query.whereContains(Song.KEY_USER, ParseUser.getCurrentUser().getObjectId());
 
         // Sort by most recent
         // TODO: Add capture date
