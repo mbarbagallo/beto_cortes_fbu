@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.photostomusic.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,6 +63,34 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(username, password);
             }
         });
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser user = new ParseUser();
+                user.setUsername(etUser.getText().toString());
+                user.setPassword(etPassword.getText().toString());
+
+                // Attempt user signup
+                user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null){
+                            // If signup was successful, go to ColorFormActivity
+                            Intent i = new Intent(LoginActivity.this, ColorFormActivity.class);
+                            i.putExtra("token", spotifyToken);
+                            startActivity(i);
+                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            finish();
+
+                        } else {
+                            // Handle signup exception
+                            Log.e(TAG, "Parse signup error", e);
+                        }
+                    }
+                });
+            }
+        });
+
         // Login to spotify, this will launch a browser from which the user can login
         // Spotify Login is persistent.
         btnSpotifyLogin.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +123,14 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (spotifyToken.isEmpty()){
                     Toast.makeText(LoginActivity.this, "Missing spotify login", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
+                } else if (user.get("colorRelation") != null){
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    i.putExtra("token", spotifyToken);
+                    startActivity(i);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    finish();
+                } else {
+                    Intent i = new Intent(LoginActivity.this, ColorFormActivity.class);
                     i.putExtra("token", spotifyToken);
                     startActivity(i);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

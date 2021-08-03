@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatSpinner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,6 +39,7 @@ public class ColorFormActivity extends AppCompatActivity {
     AppCompatSpinner spinner6;
     AppCompatSpinner spinner7;
     AppCompatSpinner spinner8;
+    String spotifyToken = "";
 
     // HEX number used to remove Alpha values from colors as it will not be used. This as Android
     // reads color by default as ARGB, only RGB is needed.
@@ -73,6 +75,8 @@ public class ColorFormActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_form);
+
+        spotifyToken = getIntent().getStringExtra("token");
 
         // Connect visual and logic elements
         btnConfirmColors = findViewById(R.id.btnConfirmColors);
@@ -127,13 +131,22 @@ public class ColorFormActivity extends AppCompatActivity {
                     // Saves the object.
                     currentUser.saveInBackground(e -> {
                         if(e==null){
-                            //Save successful
                             Toast.makeText(ColorFormActivity.this, "Save Successful", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent();
-                            setResult(RESULT_OK, i);
-                            finish();
+                            //Save successful
+                            if (spotifyToken.isEmpty()){
+                                Intent i = new Intent();
+                                setResult(RESULT_OK, i);
+                                finish();
+                            } else {
+                                Intent i = new Intent(ColorFormActivity.this, MainActivity.class);
+                                i.putExtra("token", spotifyToken);
+                                startActivity(i);
+                                finish();
+                            }
+
                         }else{
                             // Something went wrong while saving
+                            Log.e(TAG, "onClick: ", e);
                             Toast.makeText(ColorFormActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -228,5 +241,6 @@ public class ColorFormActivity extends AppCompatActivity {
         spinner5.setOnItemSelectedListener(genericListener);
         spinner6.setOnItemSelectedListener(genericListener);
         spinner7.setOnItemSelectedListener(genericListener);
+        spinner8.setOnItemSelectedListener(genericListener);
     }
 }
