@@ -3,6 +3,7 @@ package com.example.photostomusic.Activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.photostomusic.BuildConfig;
 import com.example.photostomusic.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -30,8 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     public final String TAG = this.getClass().getSimpleName();
 
     // PSF variables required to interact with the Spotify Auth API
-    // TODO: Hide keys and IDs on properties file
-    private static final String CLIENT_ID = "59a64c83ef024ea786df03a966505f91";
+    private static final String CLIENT_ID = BuildConfig.SPOTIFY_KEY;
     private static final int REQUEST_CODE = 1415926535;
     private static final String REDIRECT_URI = "intent://";
 

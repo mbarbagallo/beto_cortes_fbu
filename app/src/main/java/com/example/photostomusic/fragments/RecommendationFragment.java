@@ -244,7 +244,6 @@ public class RecommendationFragment extends Fragment {
                         }
 
                         @Override
-                        // TODO: Check for direction with switch case, push song to Parse if 1 or 3 were selected, next song if 0 or 2 were selected.
                         public void discarded(int mIndex, int direction) {
                             // there are four directions
                             //  0  |  1

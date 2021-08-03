@@ -90,19 +90,4 @@ public class MainActivity extends AppCompatActivity {
         // Set default selection
         bottomNavigationView.setSelectedItemId(R.id.action_camera);
     }
-
-    // Check for result of other activities
-    // Current use is only for color form activity
-    // TODO: Add switch to check which activity returned a result
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == COLOR_FORM_REQUEST_CDOE && resultCode == RESULT_OK){
-            // TODO: update color wheel when user returns form form
-            Log.i(TAG, "Color wheel updated successfully");
-        } else {
-            Log.e(TAG, "colors did not come through");
-        }
-    }
 }

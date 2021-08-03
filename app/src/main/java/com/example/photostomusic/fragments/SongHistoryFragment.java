@@ -83,7 +83,7 @@ public class SongHistoryFragment extends Fragment implements LikesAdapter.SongIn
         query.whereContains(Song.KEY_USER, ParseUser.getCurrentUser().getObjectId());
 
         // Sort by most recent
-        // TODO: Add capture date
+        // TODO: (STRETCH) Add capture date
         query.addDescendingOrder("createdAt");
         // Get the songs
         query.findInBackground(new FindCallback<Song>() {
