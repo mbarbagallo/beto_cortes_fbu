@@ -2,6 +2,7 @@ package com.example.photostomusic.fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.photostomusic.R;
@@ -22,6 +24,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
+
+import java.io.IOException;
 
 import models.Song;
 
@@ -34,6 +38,9 @@ public class SongDetailFragment extends Fragment {
     TextView tvSongDetailName;
     TextView tvSongDetailArtist;
     TextView tvSongDetailAlbum;
+    String preview_url;
+    MediaPlayer mp;
+
 
     public SongDetailFragment() {
         // Required empty public constructor
@@ -86,6 +93,25 @@ public class SongDetailFragment extends Fragment {
             }
         });
 
+        preview_url = song.getPreviewUrl();
+        mp = new MediaPlayer();
+        try {
+            mp.setDataSource(preview_url);
+            mp.prepare();
+            mp.start();
+            Toast.makeText(getContext(), "Playing song preview! :)", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(getContext(), "Song has no preview :(", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
 
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mp.stop();
+        mp.reset();
     }
 }

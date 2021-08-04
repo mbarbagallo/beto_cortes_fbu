@@ -23,6 +23,7 @@ public class Song extends ParseObject {
     public static final String KEY_ARTIST = "song_artist";
     public static final String KEY_ALBUM = "song_album";
     public static final String KEY_COVER = "songCover";
+    public static final String KEY_PREVIEW_URL = "preview_url";
 
     /* Getters to retrieve each attribute for the Parse object, said attributes
     are the following:
@@ -63,7 +64,9 @@ public class Song extends ParseObject {
     public String  getSongCover(){
         return getString(KEY_COVER);
     }
-
+    public String getPreviewUrl(){
+        return getString(KEY_PREVIEW_URL);
+    }
 
 
     // Setters for all the previous attributes
@@ -93,6 +96,9 @@ public class Song extends ParseObject {
     }
     public void setSongCover(String file){
         put(KEY_COVER, file);
+    }
+    public void setPreviewUrl(String url){
+        put(KEY_PREVIEW_URL, url);
     }
 
 
