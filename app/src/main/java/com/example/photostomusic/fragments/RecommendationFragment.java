@@ -65,6 +65,13 @@ public class RecommendationFragment extends Fragment {
     String songAlbum;
     String songCode;
     String previewUrl;
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopMusic();
+    }
+
     CardStack mCardStack;
     CardStackAdapter mCardAdapter;
     ImageButton btnRetakePhoto;
