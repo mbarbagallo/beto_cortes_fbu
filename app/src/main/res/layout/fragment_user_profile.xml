@@ -21,14 +21,16 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:text="Hello {{user name}}!" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnResetColorForm"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Logout" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="35dp"
+        android:backgroundTint="#00000000"
+        android:src="@drawable/ic_baseline_login_24"
+        app:tint="@color/teal_700" />
 
     <Button
         android:id="@+id/btnResetColorForm"
@@ -63,8 +65,9 @@
             android:id="@+id/emotionName1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             tools:text="Emotion"
+            android:paddingEnd="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             android:padding="5dp" />
@@ -95,8 +98,9 @@
             android:id="@+id/emotionName2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             tools:text="Emotion"
+            android:paddingEnd="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             android:padding="5dp" />
@@ -127,8 +131,9 @@
             android:id="@+id/emotionName3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             tools:text="Emotion"
+            android:paddingEnd="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             android:padding="5dp" />
@@ -159,8 +164,9 @@
             android:id="@+id/emotionName4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             tools:text="Emotion"
+            android:paddingEnd="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             android:padding="5dp" />
@@ -191,8 +197,9 @@
             android:id="@+id/emotionName5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             tools:text="Emotion"
+            android:paddingEnd="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             android:padding="5dp" />
@@ -223,8 +230,9 @@
             android:id="@+id/emotionName6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             tools:text="Emotion"
+            android:paddingEnd="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             android:padding="5dp" />
@@ -255,8 +263,9 @@
             android:id="@+id/emotionName7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             tools:text="Emotion"
+            android:paddingEnd="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             android:padding="5dp" />
@@ -286,8 +295,9 @@
             android:id="@+id/emotionName8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             tools:text="Emotion"
+            android:paddingEnd="30dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/black"
             android:padding="5dp" />

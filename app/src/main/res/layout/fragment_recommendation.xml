@@ -12,16 +12,32 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="5dp"
+        android:id="@+id/cvUserPhoto"
         app:cardCornerRadius="20dp"
         app:strokeColor="#818181"
         app:strokeWidth="1dp">
 
-        <ImageView
-            android:id="@+id/ivSongPhoto"
-            android:layout_width="60dp"
-            android:layout_height="80dp"
-            android:layout_margin="8dp"
-            tools:src="@tools:sample/avatars" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:id="@+id/ivSongPhoto"
+                android:layout_width="60dp"
+                android:layout_height="80dp"
+                android:layout_margin="8dp"
+                tools:src="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/btnRetakePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:backgroundTint="#00000000"
+                android:layout_marginTop="90dp"
+                android:src="@drawable/ic_baseline_camera_alt_24"
+                app:tint="@color/teal_700" />
+        </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 
 
@@ -40,21 +56,10 @@
 
     </com.wenchao.cardstack.CardStack>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_camera_alt_24"
-        android:backgroundTint="#00000000"
-        app:tint="@color/teal_700"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/btnRetakePhoto"
-        android:translationZ="-20dp"
-        />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_close_24"
+        android:src="@drawable/ic_baseline_call_missed_24"
         app:tint="@color/red"
         android:layout_margin="10dp"
         android:layout_centerVertical="true"
@@ -63,7 +68,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_check_24"
+        android:src="@drawable/ic_baseline_call_missed_outgoing_24"
         android:layout_margin="10dp"
         app:tint="#32cd32"
         android:layout_alignParentEnd="true"
@@ -74,9 +79,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:text="Tap for preview\nSwipe to like/reject"
-        android:layout_marginBottom="0dp"
         android:translationZ="-20dp"
+        android:layout_centerHorizontal="true"
         />
 </RelativeLayout>

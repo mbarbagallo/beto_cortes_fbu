@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,7 +41,7 @@ public class UserProfileFragment extends Fragment {
     public static final int COLOR_FORM_REQUEST_CDOE = 220700;
 
     // Visual elements of the fragment
-    Button btnLogout;
+    ImageButton btnLogout;
     Button btnResetColorForm;
     HashMap<String, String> colorRelation;
     TextView tvUserName;
