@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,9 +67,9 @@ public class RecommendationFragment extends Fragment {
     String previewUrl;
     CardStack mCardStack;
     CardStackAdapter mCardAdapter;
-    Button btnRetakePhoto;
-    Button btnFetchSongs;
+    ImageButton btnRetakePhoto;
     MediaPlayer mp;
+    int cardsLeft = 20;
 
     public RecommendationFragment() {
         // Required empty public constructor
@@ -91,7 +92,7 @@ public class RecommendationFragment extends Fragment {
         ivSongPhoto = getActivity().findViewById(R.id.ivSongPhoto);
         mCardStack = getActivity().findViewById(R.id.cardStackContainer);
         btnRetakePhoto = getActivity().findViewById(R.id.btnRetakePhoto);
-        btnFetchSongs = getActivity().findViewById(R.id.btnFetchMoreSongs);
+        //btnFetchSongs = getActivity().findViewById(R.id.btnFetchMoreSongs);
 
         // Set the layout for each card
         mCardStack.setContentResource(R.layout.card_layout);
@@ -138,20 +139,6 @@ public class RecommendationFragment extends Fragment {
                         .commit();
             }
         });
-        // User ran out of recommendations, button clicked to get more from the same picture
-        btnFetchSongs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Call the UI thread to load the adapter and bind the data to the swipeable cards
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        fetchRecommendations(genres, photo);
-                    }
-                });
-
-            }
-        });
 
     }
 
@@ -178,6 +165,7 @@ public class RecommendationFragment extends Fragment {
             // Request was successful, extract data from JSON response
             public void onResponse(Call call, Response response) throws IOException {
                 try {
+                    cardsLeft = 20;
                     // Get the response as a JSON object
                     recommendations = new JSONObject(response.body().string());
                     // Extract the songs as a JSON array
@@ -251,12 +239,19 @@ public class RecommendationFragment extends Fragment {
                             //  2  |  3
                             Log.d(TAG, "discarded: " + direction);
                             switch (direction){
+                                // Song rejected, it is now removed from stack
                                 case 0: case 2:
-                                    // Song rejected, it is now removed from stack
+                                    // Stopping music player for the preview
                                     stopMusic();
+                                    // Decrease by one the count of cards
+                                    cardsLeft--;
+                                    // If only one card is left, fetch more songs
+                                    if (cardsLeft == 1){
+                                        fetchRecommendations(genres, photo);
+                                    }
                                     break;
+                                // Song accepted, sending to Parse
                                 case 1: case 3:
-                                    // Song accepted, sending to Parse
                                     try {
                                         saveSong(songs.getJSONObject(mIndex-1), genres, photo);
                                     } catch (JSONException e) {
