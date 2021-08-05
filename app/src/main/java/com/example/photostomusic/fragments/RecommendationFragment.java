@@ -251,32 +251,14 @@ public class RecommendationFragment extends Fragment {
                             //  2  |  3
                             Log.d(TAG, "discarded: " + direction);
                             switch (direction){
-                                case 0:
+                                case 0: case 2:
                                     // Song rejected, it is now removed from stack
-                                    Log.d(TAG, "discarded: 0");
-                                    mp.stop();
-                                    mp.reset();
+                                    stopMusic();
                                     break;
-                                case 1:
+                                case 1: case 3:
                                     // Song accepted, sending to Parse
-                                    Log.d(TAG, "discarded: 1");
                                     try {
                                         saveSong(songs.getJSONObject(mIndex-1), genres, photo);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    break;
-                                case 2:
-                                    // Song rejected, it is now removed from stack
-                                    Log.d(TAG, "discarded: 2");
-                                    mp.stop();
-                                    mp.reset();
-                                    break;
-                                case 3:
-                                    // Accept, send to parse and move to history
-                                    Log.d(TAG, "discarded: 3");
-                                    try {
-                                        saveSong(songs.getJSONObject(mIndex), genres, photo);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -286,8 +268,7 @@ public class RecommendationFragment extends Fragment {
 
                         @Override
                         public void topCardTapped() {
-                            mp.stop();
-                            mp.reset();
+                            stopMusic();
                             try {
                                 JSONObject song = songs.getJSONObject(mCardStack.getCurrIndex());
                                 String preview_url = song.getString("preview_url");
@@ -310,6 +291,10 @@ public class RecommendationFragment extends Fragment {
             }
         });
 
+    }
+    private void stopMusic(){
+        mp.stop();
+        mp.reset();
     }
 
     // Method used to save songs to the DB

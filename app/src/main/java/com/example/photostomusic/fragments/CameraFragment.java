@@ -25,6 +25,8 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -45,6 +47,8 @@ public class CameraFragment extends Fragment {
     HashMap<String, String> emotionRelation;
     ParseUser user;
     String spotifyToken;
+    List<Integer> colorOptions;
+    List<String> colorNames;
 
     // Visual elements of the fragment
     Button btnPictureCapture;
@@ -163,25 +167,33 @@ public class CameraFragment extends Fragment {
         // Get the name of hex of each color resource as a string to fill the map
         // The colors are recovered as an int, then logical AND operation to remove
         // the transparency of the color, convert this to a HEX string
-        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & HEX_BASE);
-        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & HEX_BASE);
-        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & HEX_BASE);
-        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & HEX_BASE);
-        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & HEX_BASE);
-        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & HEX_BASE);
-        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & HEX_BASE);
-        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & HEX_BASE);
+        colorNames = new ArrayList<>();
+        colorOptions = new ArrayList<>(
+                Arrays.asList(
+                        R.color.option1,
+                        R.color.option2,
+                        R.color.option3,
+                        R.color.option4,
+                        R.color.option5,
+                        R.color.option6,
+                        R.color.option7,
+                        R.color.option8
+                )
+        );
+        for (int colorOption : colorOptions){
+            colorNames.add(Integer.toHexString(getResources().getColor(colorOption) & HEX_BASE));
+        }
 
         // Map used to count the appearances of each main color of an image
         HashMap <String, Integer> frequencies = new HashMap<String, Integer>() {{
-            put(color1, 0);
-            put(color2, 0);
-            put(color3, 0);
-            put(color4, 0);
-            put(color5, 0);
-            put(color6, 0);
-            put(color7, 0);
-            put(color8, 0);
+            put(colorNames.get(0), 0);
+            put(colorNames.get(1), 0);
+            put(colorNames.get(2), 0);
+            put(colorNames.get(3), 0);
+            put(colorNames.get(4), 0);
+            put(colorNames.get(5), 0);
+            put(colorNames.get(6), 0);
+            put(colorNames.get(7), 0);
         }};
 
         // Nested for to iterate over every pixel
