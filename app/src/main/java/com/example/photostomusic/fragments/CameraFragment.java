@@ -2,6 +2,7 @@ package com.example.photostomusic.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -9,17 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.camerakit.CameraKitView;
 import com.example.photostomusic.R;
 import com.parse.ParseUser;
 
@@ -50,8 +49,10 @@ public class CameraFragment extends Fragment {
     List<Integer> colorOptions;
     List<String> colorNames;
 
+    CameraKitView cameraKitView;
+
     // Visual elements of the fragment
-    Button btnPictureCapture;
+    ImageButton btnCapturePhoto;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -70,19 +71,76 @@ public class CameraFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        cameraKitView.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        cameraKitView.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cameraKitView.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        cameraKitView.onStop();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        cameraKitView.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnPictureCapture = view.findViewById(R.id.btnImageCapture);
         user = ParseUser.getCurrentUser();
         colorRelation = (HashMap<String, String>) user.get("ColorRelation");
+        cameraKitView = view.findViewById(R.id.cameraKit);
+        btnCapturePhoto = view.findViewById(R.id.btnCapturePhoto);
 
-        btnPictureCapture.setOnClickListener(new View.OnClickListener() {
+        btnCapturePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchCamera();
+                cameraKitView.captureImage(new CameraKitView.ImageCallback() {
+                    @Override
+                    public void onImage(CameraKitView cameraKitView, final byte[] capturedImage) {
+                        Bitmap photo = BitmapFactory.decodeByteArray(capturedImage, 0, capturedImage.length);
+                        Bitmap resizedPhoto = resize(photo, 400, 600);
+
+                        // Get genres obtained from the image
+                        HashMap<String, String> genres = getMusicGenres(resizedPhoto);
+
+                        // Construct a new fragment and pass data with a bundle
+                        RecommendationFragment fragment = new RecommendationFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("genres", Parcels.wrap(genres));
+                        bundle.putParcelable("photo", Parcels.wrap(resizedPhoto));
+                        bundle.putString("key", spotifyToken);
+                        fragment.setArguments(bundle);
+                        getActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .setCustomAnimations(
+                                        android.R.anim.fade_in,  // enter
+                                        android.R.anim.fade_out // exit
+                                )
+                                .replace(R.id.flContainer, fragment, "findThisFragment")
+                                .commit();
+                    }
+                });
             }
         });
+
 
         Bundle bundle = this.getArguments();
         spotifyToken = bundle.getString("key");
@@ -111,6 +169,7 @@ public class CameraFragment extends Fragment {
 
     }
 
+    /*
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -130,9 +189,6 @@ public class CameraFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 Bitmap photo = (Bitmap) extras.get("data");
 
-                // Load the taken image into a preview
-                ImageView ivPreview = getActivity().findViewById(R.id.ivPreview);
-                ivPreview.setImageBitmap(photo);
 
                 // Get genres obtained from the image
                 HashMap<String, String> genres = getMusicGenres(photo);
@@ -156,6 +212,25 @@ public class CameraFragment extends Fragment {
         } else { // Result was a failure
             Toast.makeText(getActivity(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
         }
+    }*/
+
+    private static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+        }
+        return image;
     }
 
 

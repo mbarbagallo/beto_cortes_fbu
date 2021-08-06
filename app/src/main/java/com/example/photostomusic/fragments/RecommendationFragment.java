@@ -21,6 +21,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.photostomusic.CardStackAdapter;
 import com.example.photostomusic.R;
 import com.parse.ParseException;
@@ -116,7 +119,10 @@ public class RecommendationFragment extends Fragment {
         spotifyToken = bundle.getString("key");
 
         // Set song photo as the captured image
-        ivSongPhoto.setImageBitmap(photo);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(25));
+        Glide.with(getContext()).asBitmap().load(photo).apply(requestOptions).into(ivSongPhoto);
+        //ivSongPhoto.setImageBitmap(photo);
 
         // Call the UI thread to load the adapter and bind the data to the swipeable cards
         getActivity().runOnUiThread(new Runnable() {
