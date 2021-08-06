@@ -51,6 +51,9 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.findbugs:jsr305:2.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup:javawriter:2.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.3.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.3.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.ext:junit:1.1.3@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-core:3.4.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:runner:1.4.0@aar" level="project" />
@@ -71,6 +74,13 @@
     <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.12.10" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.15.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.parse-community.Parse-SDK-Android:bolts-tasks:1.25.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.70" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.3.70" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.3.70" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Gradle: ./libs/spotify.aar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.material:material:1.4.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.constraintlayout:constraintlayout:2.0.4@aar" level="project" />
@@ -121,5 +131,7 @@
     <orderEntry type="library" name="Gradle: com.github.wenchaojiang:AndroidSwipeableCardStack:0.1.6@aar" level="project" />
     <orderEntry type="library" name="Gradle: me.relex:circleindicator:2.1.4@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.ImaginativeShohag:Why-Not-Image-Carousel:v1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.camerakit:camerakit:1.0.0-beta3.10@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.camerakit:jpegkit:0.1.0@aar" level="project" />
   </component>
 </module>
