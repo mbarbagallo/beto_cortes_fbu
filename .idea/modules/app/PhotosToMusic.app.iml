@@ -119,5 +119,7 @@
     <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation-experimental:1.0.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.github.wenchaojiang:AndroidSwipeableCardStack:0.1.6@aar" level="project" />
+    <orderEntry type="library" name="Gradle: me.relex:circleindicator:2.1.4@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.ImaginativeShohag:Why-Not-Image-Carousel:v1.0.0@aar" level="project" />
   </component>
 </module>

@@ -1,28 +1,317 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.UserProfileFragment">
 
 
-    <Button
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivUserImage"
+        android:layout_alignBottom="@+id/ivUserImage"
+        android:layout_marginStart="-25dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/ivUserImage"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Hello {{user name}}!" />
+
+    <ImageButton
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Logout"
-        android:layout_below="@+id/btnResetColorForm"
-        android:layout_marginTop="20dp"
-    />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="35dp"
+        android:backgroundTint="#00000000"
+        android:src="@drawable/ic_baseline_login_24"
+        app:tint="@color/teal_700" />
 
     <Button
         android:id="@+id/btnResetColorForm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Color form activity"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="250dp"
-    />
+        android:layout_below="@id/cardSpinner8"
+        android:layout_marginTop="60dp"
+        android:text="Color form activity" />
+
+    <ImageView
+        android:id="@+id/ivUserImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="30dp"
+        android:src="@drawable/ic_baseline_account_circle_24"
+        app:tint="@color/teal_700" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSpinner1"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/ivUserImage"
+        android:layout_alignEnd="@+id/btnResetColorForm"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="120dp"
+        >
+
+        <TextView
+            android:id="@+id/emotionName1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Emotion"
+            android:paddingEnd="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/colorCircle1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_brightness_1_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSpinner2"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardSpinner1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_alignEnd="@+id/btnResetColorForm"
+        android:layout_marginEnd="120dp"
+        android:layout_marginTop="30dp" >
+
+        <TextView
+            android:id="@+id/emotionName2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Emotion"
+            android:paddingEnd="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/colorCircle2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_brightness_1_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSpinner3"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardSpinner2"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_alignEnd="@+id/btnResetColorForm"
+        android:layout_marginEnd="120dp"
+        android:layout_marginTop="30dp" >
+
+        <TextView
+            android:id="@+id/emotionName3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Emotion"
+            android:paddingEnd="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/colorCircle3"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_brightness_1_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSpinner4"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardSpinner3"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_alignEnd="@+id/btnResetColorForm"
+        android:layout_marginEnd="120dp"
+        android:layout_marginTop="30dp" >
+
+        <TextView
+            android:id="@+id/emotionName4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Emotion"
+            android:paddingEnd="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/colorCircle4"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_brightness_1_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSpinner5"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/ivUserImage"
+        android:layout_alignStart="@+id/btnResetColorForm"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <TextView
+            android:id="@+id/emotionName5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Emotion"
+            android:paddingEnd="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/colorCircle5"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_brightness_1_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSpinner6"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardSpinner5"
+        android:layout_alignStart="@+id/btnResetColorForm"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <TextView
+            android:id="@+id/emotionName6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Emotion"
+            android:paddingEnd="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/colorCircle6"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_brightness_1_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSpinner7"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardSpinner6"
+        android:layout_alignStart="@+id/btnResetColorForm"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <TextView
+            android:id="@+id/emotionName7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Emotion"
+            android:paddingEnd="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+        <ImageView
+            android:id="@+id/colorCircle7"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_brightness_1_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSpinner8"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/cardSpinner7"
+        android:layout_alignStart="@+id/btnResetColorForm"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp" >
+
+        <TextView
+            android:id="@+id/emotionName8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="Emotion"
+            android:paddingEnd="30dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/colorCircle8"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_baseline_brightness_1_24"
+            />
+
+    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>

@@ -119,20 +119,28 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                HashMap<String, String> colors = (HashMap<String, String>) user.get("ColorRelation");
-                // If an exception occurs send a log
-                if (e != null){
+                HashMap<String, String> colors;
+                // Check if the user exists, if so get its color relation
+                if (user != null && e == null) {
+                    colors = (HashMap<String, String>) user.get("ColorRelation");
+                } else {
                     Toast.makeText(LoginActivity.this, "Parse login error", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (spotifyToken.isEmpty()){
+                }
+                // User exists in Parse, check Spotify token
+                if (spotifyToken.isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Missing spotify login", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (!colors.containsKey("0")){
+                // User exists and has token, if the user does not have a placeholder key
+                // generated in Parse on its color relation then send them to the MainActivity
+                } else if (!colors.containsKey("0")) {
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.putExtra("token", spotifyToken);
                     startActivity(i);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();
+                // User exists and has token but has not completed the ColorForm, send them to
+                // the ColorFormActivity
                 } else {
                     Intent i = new Intent(LoginActivity.this, ColorFormActivity.class);
                     i.putExtra("token", spotifyToken);

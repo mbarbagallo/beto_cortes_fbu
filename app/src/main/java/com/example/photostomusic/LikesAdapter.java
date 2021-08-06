@@ -94,7 +94,10 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesAdapter.ViewHolder> 
             tvSongListAlbum.setText(song.getSongAlbum());
 
             // Load images with glide, album cover is a direct URL load
-            Glide.with(context).load(song.getSongCover()).into(ivSongListCover);
+            Glide.with(context)
+                    .load(song.getSongCover())
+                    .circleCrop()
+                    .into(ivSongListCover);
 
             // Photo file is a bit more complex, the file must be pulled, then its data must be
             // extracted as a byte array, later on to be built into a Bitmap that is sent to its
@@ -104,7 +107,11 @@ public class LikesAdapter extends RecyclerView.Adapter<LikesAdapter.ViewHolder> 
                 @Override
                 public void done(byte[] data, ParseException e) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(data,0,data.length);
-                    Glide.with(context).asBitmap().load(bitmap).into(ivSongListPhoto);
+                    Glide.with(context)
+                            .asBitmap()
+                            .load(bitmap)
+                            .circleCrop()
+                            .into(ivSongListPhoto);
                 }
             });
 

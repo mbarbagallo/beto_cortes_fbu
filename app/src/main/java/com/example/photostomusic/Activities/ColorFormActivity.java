@@ -40,6 +40,8 @@ public class ColorFormActivity extends AppCompatActivity {
     AppCompatSpinner spinner7;
     AppCompatSpinner spinner8;
     String spotifyToken = "";
+    List<Integer> colorOptions;
+    List<String> colorNames;
 
     // HEX number used to remove Alpha values from colors as it will not be used. This as Android
     // reads color by default as ARGB, only RGB is needed.
@@ -92,14 +94,22 @@ public class ColorFormActivity extends AppCompatActivity {
         // Get the name of hex of each color resource as a string to fill the map
         // The colors are recovered as an int, then logical AND operation to remove
         // the transparency of the color, convert this to a HEX string
-        String color1 = Integer.toHexString(getResources().getColor(R.color.option1) & HEX_BASE);
-        String color2 = Integer.toHexString(getResources().getColor(R.color.option2) & HEX_BASE);
-        String color3 = Integer.toHexString(getResources().getColor(R.color.option3) & HEX_BASE);
-        String color4 = Integer.toHexString(getResources().getColor(R.color.option4) & HEX_BASE);
-        String color5 = Integer.toHexString(getResources().getColor(R.color.option5) & HEX_BASE);
-        String color6 = Integer.toHexString(getResources().getColor(R.color.option6) & HEX_BASE);
-        String color7 = Integer.toHexString(getResources().getColor(R.color.option7) & HEX_BASE);
-        String color8 = Integer.toHexString(getResources().getColor(R.color.option8) & HEX_BASE);
+        colorNames = new ArrayList<>();
+        colorOptions = new ArrayList<>(
+                Arrays.asList(
+                        R.color.option1,
+                        R.color.option2,
+                        R.color.option3,
+                        R.color.option4,
+                        R.color.option5,
+                        R.color.option6,
+                        R.color.option7,
+                        R.color.option8
+                )
+        );
+        for (int colorOption : colorOptions){
+            colorNames.add(Integer.toHexString(getResources().getColor(colorOption) & HEX_BASE));
+        }
 
 
         // Add listener to confirm button, set a RESULT_OK code for the activity if the form is valid
@@ -108,14 +118,14 @@ public class ColorFormActivity extends AppCompatActivity {
             public void onClick(View v) {
                 HashMap<String, String> map = new HashMap<String, String>() {{
                     //getResources().getString(R.color.someColor);
-                    put(color1, spinner1.getSelectedItem().toString());
-                    put(color2, spinner2.getSelectedItem().toString());
-                    put(color3, spinner3.getSelectedItem().toString());
-                    put(color4, spinner4.getSelectedItem().toString());
-                    put(color5, spinner5.getSelectedItem().toString());
-                    put(color6, spinner6.getSelectedItem().toString());
-                    put(color7, spinner7.getSelectedItem().toString());
-                    put(color8, spinner8.getSelectedItem().toString());
+                    put(colorNames.get(0), spinner1.getSelectedItem().toString());
+                    put(colorNames.get(1), spinner2.getSelectedItem().toString());
+                    put(colorNames.get(2), spinner3.getSelectedItem().toString());
+                    put(colorNames.get(3), spinner4.getSelectedItem().toString());
+                    put(colorNames.get(4), spinner5.getSelectedItem().toString());
+                    put(colorNames.get(5), spinner6.getSelectedItem().toString());
+                    put(colorNames.get(6), spinner7.getSelectedItem().toString());
+                    put(colorNames.get(7), spinner8.getSelectedItem().toString());
                 }};
                 if (map.containsValue("default")){
                     Toast.makeText(ColorFormActivity.this, "Please don't leave any selector as 'default'.", Toast.LENGTH_SHORT).show();

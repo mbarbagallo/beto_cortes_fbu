@@ -13,41 +13,39 @@
         app:strokeWidth="1dp"
         android:layout_width="match_parent"
         android:id="@+id/cvSongList"
-        android:layout_height="100dp">
+        app:cardBackgroundColor="#EDECEC"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
-
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/ivSongListPhoto"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+
                 tools:srcCompat="@tools:sample/avatars" />
 
             <ImageView
                 android:id="@+id/ivSongListCover"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@+id/ivSongListPhoto"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/tvSongListName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/ivSongListCover"
+                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="10dp"
                 android:layout_toEndOf="@+id/ivSongListCover"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="Song Name" />
 
@@ -59,8 +57,9 @@
                 android:layout_alignStart="@+id/tvSongListName"
                 android:layout_alignEnd="@+id/tvSongListName"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="10dp"
+
                 android:layout_marginEnd="0dp"
+                android:textSize="16sp"
                 tools:text="Song Artist" />
 
             <TextView
@@ -71,8 +70,8 @@
                 android:layout_alignStart="@+id/tvSongListArtist"
                 android:layout_alignEnd="@+id/tvSongListName"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginEnd="0dp"
+                android:textSize="16sp"
                 tools:text="Song Album" />
 
         </RelativeLayout>
